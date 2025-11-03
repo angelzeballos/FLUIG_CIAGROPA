@@ -1,0 +1,107 @@
+<html>
+
+<head>
+	<!-- Fluig core -->
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css" />
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+	<!-- Plugins -->
+	<script type="text/javascript" src="js/jquery.mask.min.js"></script>
+	<script type="text/javascript" src="js/jquery.masMoney.js"></script>
+	<script type="text/javascript" src="js/moment.js"></script>
+	<script type="text/javascript" src="js/pivot.js"></script>
+
+	<!-- Application -->
+	<link rel="stylesheet" rel="stylesheet" href="custom.css">
+	<link rel="stylesheet" rel="stylesheet" href="pivot.css">
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="js/activities.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/genereicsZoom.js"></script>
+	<script type="text/javascript" src="js/enableFields.js"></script>
+	<script type="text/javascript" src="js/custom.js"></script>
+	<script type="text/javascript" src="js/beforeSendValidate.js"></script>
+
+</head>
+
+<body>
+	<div class="fluig-style-guide">
+		<form name="form" role="form">
+
+
+
+			<!-- Titulo del Formulario -->
+			<div class="panel panel-default" id="panel-titulo">
+				<div class="panel-body text-center">
+					<h1>Solicitud de Transferencia de Dep�sito</h1>					
+				</div>
+			</div>
+
+			<!-- Panel datos del solicitante-->
+			<div class="panel panel-solicitante" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel body">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="nombreSolicitante">Solicitante</label>
+							<input type="text" class="fomr-control" id="nombreSolicitante" name="nombreSolicitante" readonly>
+						</div>
+						<div class="col-md-3">
+							<label for="numeroSolicitud">N�mero de Solicitud</label>
+							<input type="text" class="form-control" id="numeroSolicitud" name="numeroSolicitud" readonly>
+						</div>
+						<div class="col-md-3">
+							<label for="fechaSolicitud">Fecha de Solicitud</label>
+							<input type="text" class="form-control" id="fechaSolicitud" name="fechaSolicitud" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+</body>
+
+</html>
+
+
+
+
+
+
+<!-- Seleccionar depósito Destino -->
+<div class="col-md-3">
+	<label for="depositoDestino">Depósito Destino</label>
+	<input type="zoom" class="form-control input-standart" id="depositoDestino"
+		name="depositoDestino" zoomvalue="DESC_DEPOSITO" 
+		
+		data-zoom="{
+		'displayKey':'DESC_DEPOSITO',
+		'datasetId':'ds_dsto_cia',
+		'maximumSelectionLength':1,
+		'fields':[1
+			{
+			'field':'COD_DEPOSITO',
+			'label':'Código',
+			'standart':'true',
+			'search':'true'
+			},
+			{
+			'field':'DESC_DEPOSITO',
+			'label':'Depósito',
+			'standart':'true',
+			'search':'true'
+			}
+		]
+	}"
+	
+	data-zoom-return="COD_DEPOSITO,DESC_DEPOSITO:depositoDestino,descDepositoDestino"
+	>
+	<input type="hidden" id="descDepositoDestino" name="descDepositoDestino">
+</div>
