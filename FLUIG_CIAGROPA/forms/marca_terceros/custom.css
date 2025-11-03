@@ -1,0 +1,236 @@
+/* =======================  CSS Variables (:root)  ========================= */
+:root {
+    --background_widget: #F7F7F7;
+    --background_white: #ffffff;
+
+    --background_color_panel: #4AA148;
+    --color_text_panel: #ffffff;
+
+    --background_button: #4AA148;
+    --background_button_hover: #7B8536;
+
+    --border-color: #E0E0E0;
+    --bg-white: #FFFFFF;
+    --primary-color: #4c9c4b;
+    --success-color: #4c9c4b;
+    --danger-color: #f44336;
+    --primary-dark: #4c9c4b;
+
+}
+
+/* ========================  Other Styles  ================================ */
+/* ========================  Reset / Global  ================================ */
+
+.none {
+    display: none !important;
+}
+
+.input-datetime[readonly] {
+    pointer-events: none;
+}
+
+.input-date[readonly] {
+    pointer-events: none;
+}
+
+.input-time[readonly] {
+    pointer-events: none;
+}
+
+input[readonly][onclick] {
+    pointer-events: none;
+}
+
+input[readonly][ondblclick] {
+    pointer-events: none;
+}
+
+select[readonly][onclick] {
+    pointer-events: none;
+}
+
+.disabled {
+    background-color: #f2f2f2 !important;
+    color: #a7a9ac !important;
+    opacity: 1;
+    border-width: 1px;
+    border-color: #d1d3d4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ========================  PANEL & HEDING STYLES  ========================= */
+
+.panel-ciagropa {
+    border-color: var(--background_color_panel) !important;
+}
+
+.panel-heading {
+    background: var(--background_color_panel);
+    color: var(--color_text_panel);
+}
+
+/* ========================  BUTTON STYLES  ================================ */
+
+.btn-ciagropa {
+    background: var(--background_button);
+    color: var(--color_text_panel) !important;
+}
+
+.btn-ciagropa:hover {
+    background: var(--background_button_hover);
+    color: var(--color_text_panel);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ========================  INPUT STYLES  ========================= */
+
+.input-standart {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    opacity: 1;
+    border: none !important;
+    border-color: #ffffff !important;
+}
+
+/* ========================  FORM STYLES  ================================ */
+
+.required:after {
+    content: " •";
+    color: #e74c3c;
+}
+
+.placeholder-orange::placeholder {
+    color: #ffa500 !important;
+}
+
+.switch-sb {
+    margin-top: 24px !important;
+}
+
+/* ========================  FORM > PANEL > TABLE  ========================= */
+
+#tablaAprobacionSupervisor>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaAprobacionGerente1>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaAprobacionGerente2>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaAprobacionJefeCompras>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaItems>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaProveedores>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+#tablaAnalisisTecnico>tbody>tr>td {
+    padding-inline: 7px !important;
+}
+
+.btn-remove-analisis,
+.btn-eliminar-aprobacao-supervisor,
+.btn-eliminar-aprobacao-gerente1,
+.btn-eliminar-aprobacao-gerente2,
+.btn-eliminar-aprobacao-jefe-compra {
+    width: 50px !important;
+}
+
+/* ========================  OTHER STYLES  ================================ */
+
+.hr-ciagropa {
+    border: 0.5px solid var(rgba(162, 202, 156, 0.574));
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.alert-danger {
+    border-color: var(--danger-color) !important;
+    background-color: rgba(244, 67, 54, 0.05) !important;
+}
+
+/* ========================  RADIO LABEL STYLES  ========================= */
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    background-color: var(--bg-white);
+}
+
+.radio-label:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(25, 118, 210, 0.05);
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + .radio-text {
+    font-weight: 700;
+}
+
+.radio-aprobar input[type="radio"]:checked ~ .radio-text,
+.radio-aprobar:has(input[type="radio"]:checked) {
+    border-color: var(--success-color);
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+}
+
+.radio-rechazar input[type="radio"]:checked ~ .radio-text,
+.radio-rechazar:has(input[type="radio"]:checked) {
+    border-color: var(--danger-color);
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--danger-color);
+}
+

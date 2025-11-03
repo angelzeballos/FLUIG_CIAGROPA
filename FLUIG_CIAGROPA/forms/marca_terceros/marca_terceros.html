@@ -1,0 +1,438 @@
+<html>
+
+<head>
+	<!-- Fluig core -->
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css" />
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+	<!-- Plugins -->
+	<script type="text/javascript" src="jquery.mask.min.js"></script>
+	<script type="text/javascript" src="jquery.maskMoney.js"></script>
+	<script type="text/javascript" src="pivot.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+
+	<!-- Application -->
+	<link type="text/css" rel="stylesheet" href="custom.css">
+	<link type="text/css" rel="stylesheet" href="pivot.css">
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="activities.js"></script>
+	<script type="text/javascript" src="enableFields.js"></script>
+	<script type="text/javascript" src="displayFields.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+	<script type="text/javascript" src="mail.js"></script>
+
+</head>
+
+<body>
+	<div class="fluig-style-guide">
+		<form name="form" role="form">
+			<section class="form-hidden-fields">
+				<h2 class="sr-only">Metadata</h2>
+				<div class="hidden-group">
+					<!-- Controles ocultos -->
+					<input type="hidden" id="codEmpresa" name="codEmpresa">
+					<input type="hidden" id="intActividad" name="intActividad">
+					<input type="hidden" id="ultActividad" name="ultActividad">
+					<!-- -->
+				</div>
+			</section>
+
+
+			<!-- Titulo del Formulario -->
+			<div class="panel panel-default" id="panel-titulo">
+				<div class="panel-body text-center">
+					<h1>Solicitud de Marca de Terceros</h1>
+				</div>
+			</div>
+
+			<!-- Panel datos del solicitante-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="nombreSolicitante">Solicitante</label>
+							<input type="text" class="form-control input-standart" id="nombreSolicitante"
+								name="nombreSolicitante" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroSolicitud">Número de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="numeroSolicitud"
+								name="numeroSolicitud" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaSolicitud">Fecha de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="fechaSolicitud"
+								name="fechaSolicitud" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Cabezera de detalles-->
+			<div class="panel panel-ciagropa" id="panel-detalles">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos Generales de la Solicitud</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="selectCliente">Cliente:</label>
+							<input type="text" class="form-control input-standart" id="selectCliente"
+								name="selectCliente" zoomvalue="COD_CLIENTE" data-zoom="{
+								'displayKey':'COD_CLIENTE',
+								'datasetId':'ds_cliente_cia',
+								'maximumSelectionLength':1,
+								'fields':[
+									{
+									'field':'COD_CLIENTE',
+									'label':'Código',
+									'standart':'true',
+									'search':'true'
+									},
+									{
+									'field':'DESC_CLIENTE',
+									'label':'Cliente',
+									'standart':'true',
+									'search':'true'
+									}
+								]
+							}">
+						</div>
+						<div class="col-md-4">
+							<label for="correoCliente">Correo del Cliente:</label>
+							<input type="text" class="form-control input-standart" id="correoCliente"
+								name="correoCliente">
+						</div>
+						<div class="col-md-4">
+							<label for="celularCliente">Teléfono del Cliente:</label>
+							<input type="text" class="form-control input-standart" id="celularCliente"
+								name="celularCliente">
+						</div>
+					</div>
+
+					<hr class="hr-ciagropa">
+
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="selectProducto">Producto a Registrar:</label>
+							<input type="text" class="form-control input-standart" id="selectProducto"
+								name="selectProducto" zoomvalue="COD_PRODUCTO" data-zoom="{
+								'displayKey':'COD_PRODUCTO',
+								'datasetId':'ds_pdto_cia',
+								'maximumSelectionLength':1,
+								'fields':[
+									{
+									'field':'COD_PRODUCTO',
+									'label':'Código',
+									'standart':'true',
+									'search':'true'
+									},
+									{
+									'field':'DESC_PRODUCTO',
+									'label':'Producto',
+									'standart':'true',
+									'search':'true'
+									}
+								]
+							}">
+						</div>
+						<div class="col-md-4">
+							<label for="nombreMarca">Nombre de la Marca:</label>
+							<input type="text" class="form-control input-standart" id="nombreMarca" name="nombreMarca">
+						</div>
+						<div class="col-md-4">
+							<label for="tipoSolicitud">Tipo de Solicitud:</label>
+							<select name="tipoSolicitud" id="tipoSolicitud" class="form-control">
+								<option value="">-- Seleccione --</option>
+								<option value="nueva_marca">Nueva Marca</option>
+								<option value="renovacion_marca">Renovación de Marca</option>
+								<option value="modificacion_marca">Autoextensión</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Validación Comercial-->
+			<div class="panel panel-ciagropa" id="panel-validacion-comercial">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Validación Comercial
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="observiacionComercial">Condiciones Comerciales:</label>
+							<textarea name="observiacionComercial" id="observiacionComercial" class="form-control"
+								placeholder="Ingresar observación" rows="5"></textarea>
+						</div>
+					</div>
+					<label>Decisión Comercial:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoMarketing" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoMarketing" name="decisionMarketing"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoMarketing" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoMarketing"
+									name="decisionMarketing" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosComercialesContainer">
+						<div class="col-md-6">
+							<label for="comentariosComerciales">Comentarios:</label>
+							<textarea name="comentariosComerciales" id="comentariosComerciales" class="form-control"
+								placeholder="Ingresar comentarios" rows="5"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Gestión de Registros y Documentación-->
+			<div class="panel panel-ciagropa" id="panel-gestion-registros">
+				<div class="panel-heading">
+					<h3 class="panel-title">Gestión de Registros y Documentación</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="fechaSolicitudCliente">Fecha de Solicitud a Cliente:</label>
+							<input type="date" class="form-control" id="fechaSolicitudCliente"
+								name="fechaSolicitudCliente" value=""
+								placeholder="Ingrese la fecha de solicitud a cliente">
+						</div>
+						<div class="col-md-3">
+							<label for="documentacionRecibida" style="display: block;">Documentación Recibida: (Anexar
+								Documento)</label>
+							<label for="documentacionRecibida" class="radio-label">
+								<input type="checkbox" id="documentacionRecibida" name="documentacionRecibida"
+									value="true">
+								<strong>Recibido</strong>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="correoDestinatario">Correo Destinatario:</label>
+							<input type="text" class="form-control" id="correoDestinatario" name="correoDestinatario"
+								value="" placeholder="Ingrese el correo electrónico del destinatario">
+						</div>
+						<div class="col-md-4">
+							<label for="requisitosCliente">Requisitos Solicitados al Cliente:</label>
+							<textarea name="requisitoCliente" id="requisitoCliente" class="form-control"
+								placeholder="Ingrese los requisitos solicitados al cliente" rows="5">Estimado Cliente de manera a proseguir con el tramite de la extensión, necesitaremos que nos proporcione los siguientes datos:
+
+								Datos para Etiqueta Técnica:
+								• Logo de la empresa solicitante:
+								• Logo del producto:
+								
+								Datos de la Empresa:
+								• Número de registro de entidad comercial ante Senave:
+								• Dirección de la empresa:
+								• Número de teléfono de la empresa:
+								
+								Datos para Autorización:
+								• Nombre completo y número de cédula del representante Legal:
+								• Nombre completo y número de cédula del asesor técnico:
+							
+							Saludos cordiales.</textarea>
+							<button class="btn btn-primary" id="btnEnviarRequisitos" name="btnEnviarRequisitos"
+								onclick="enviarRequisitos()">Enviar a Correo</button>
+						</div>
+					</div>
+					<label>Decisión Registros:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoRegistros" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoRegistros" name="decisionRegistros"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoRegistros" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoRegistros"
+									name="decisionRegistros" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosRegistrosContainer">
+						<div class="col-md-6">
+							<label for="comentariosRegistros">Comentarios:</label>
+							<textarea name="comentariosRegistros" id="comentariosRegistros" class="form-control"
+								placeholder="Ingresar comentarios" rows="5"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Aprobación de Etiqueta Técnica -->
+			<div class="panel panel-ciagropa" id="panel-aprobacion-etiqueta-tecnica">
+				<div class="panel-heading">
+					<h3 class="panel-title">Aprobación de Etiqueta Técnica</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="fechaSolicitudAprobacion">Fecha de Solicitud de Aprobación:</label>
+							<input type="date" class="form-control" id="fechaSolicitudAprobacion"
+								name="fechaSolicitudAprobacion" value="">
+						</div>
+						<div class="col-md-3">
+							<label for="docPropuestaTecnica" style="display: block;">Propuesta Técnica: (Anexar
+								Documento)</label>
+							<label for="docPropuestaTecnica" class="radio-label">
+								<input type="checkbox" id="docPropuestaTecnica" name="docPropuestaTecnica" value="true">
+								<strong>Recibido</strong>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="correoPropuestaTecnica">Correo Destinatario:</label>
+							<input type="text" class="form-control" id="correoPropuestaTecnica"
+								name="correoPropuestaTecnica" value=""
+								placeholder="Ingrese el correo electrónico del destinatario">
+						</div>
+						<div class="col-md-4">
+							<label for="mensajePropuestaTecnica">Mensaje Propuesta de Etiqueta Técnica al
+								Cliente:</label>
+							<textarea name="mensajePropuestaTecnica" id="mensajePropuestaTecnica" class="form-control"
+								placeholder="Ingrese la propuesta de etiqueta técnica al cliente" rows="5">Estimado Cliente a manera de verificar la propuesta de etiqueta técnica, enviamos el mismo para su aprobación.
+
+								Aguardamos sus comentarios, para proseguir con el tramite de la extensión.
+							
+								Saludos cordiales.
+							</textarea>
+							<button class="btn btn-primary" id="btnEnviarPropuestaTecnica"
+								name="btnEnviarPropuestaTecnica" onclick="enviarPropuestaTecnica()">Enviar a
+								Correo</button>
+						</div>
+					</div>
+					<label>Decisión Cliente:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoCliente" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoCliente" name="decisionCliente"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoCliente" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoCliente" name="decisionCliente"
+									value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosClienteContainer">
+						<div class="col-md-6">
+							<label for="comentariosCliente">Comentarios:</label>
+							<textarea name="comentariosCliente" id="comentariosCliente" class="form-control"
+								placeholder="Ingresar comentarios" rows="5"></textarea>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Gestión y Aprobación SENAVE -->
+			<div class="panel panel-ciagropa" id="panel-gestion-senave">
+				<div class="panel-heading">
+					<h3 class="panel-title">Gestión y Aprobación SENAVE</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="fechaSolicitudSenave">Fecha de Solicitud a SENAVE:</label>
+							<input type="date" class="form-control" id="fechaSolicitudSenave"
+								name="fechaSolicitudSenave" value="">
+						</div>
+						<div class="col-md-3">
+							<label for="docPropuestaSenave" style="display: block;">Documentacion enviada a Senave:
+								(Anexar Documento)</label>
+							<label for="docPropuestaSenave" class="radio-label">
+								<input type="checkbox" id="docPropuestaSenave" name="docPropuestaSenave" value="true">
+								<strong>Enviada a SENAVE</strong>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="correoSolicitudPago">Correo Destinatario:</label>
+							<input type="text" class="form-control" id="correoSolicitudPago" name="correoSolicitudPago"
+								value="" placeholder="Ingrese el correo electrónico del destinatario">
+						</div>
+						<div class="col-md-4">
+							<label for="mensajeSolicitudPago">Mensaje para solicitud de pago:</label>
+							<textarea class="form-control" name="mensajeSolicitudPago" id="mensajeSolicitudPago"
+								placeholder="Ingrese mensaje para solicitud de pago" rows="5"></textarea>
+							<button class="btn btn-primary" id="btnEnviarSolicitudPago" name="btnEnviarSolicitudPago"
+								onclick="enviarSolicitudPago()">Enviar a Correo</button>
+						</div>
+						<div class="col-md-3">
+							<label for="docComprobantePago" style="display: block;">Comprobante de Pago del Cliente:
+								(Anexar Documento)</label>
+							<label for="docComprobantePago" class="radio-label">
+								<input type="checkbox" id="docComprobantePago" name="docComprobantePago" value="true">
+								<strong>Recibido</strong>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="fechaAprobacionSenave">Fecha de Aprobación SENAVE:</label>
+							<input type="date" class="form-control" id="fechaAprobacionSenave"
+								name="fechaAprobacionSenave" value="">
+						</div>
+						<div class="col-md-3">
+							<label for="fechaVencimientoCertificado">Fecha de Vencimiento de Certificado:</label>
+							<input type="date" class="form-control" id="fechaVencimientoCertificado"
+								name="fechaVencimientoCertificado" value="">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="docOficialSenave" style="display: block;">Documento Oficial SENAVE: (Anexar
+								Documento)</label>
+							<label for="docOficialSenave" class="radio-label">
+								<input type="checkbox" id="docOficialSenave" name="docOficialSenave" value="true">
+								<strong>Recibido</strong>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cierre y Notificaciones -->
+			<div class="panel panel-ciagropa" id="panel-cierre-notificaciones">
+				<div class="panel-heading">
+					<h3 class="panel-title">Cierre y Notificaciones</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<label for="btnNotificarAprobacion">Notificar Aprobación</label>
+						<button class="btn btn-primary" id="btnNotificarAprobacion" name="btnNotificarAprobacion"
+							onclick="notificarAprobacion()">Notificar a todos</button>
+					</div>
+					<div class="form-group row">
+						<label for="observacionesCierre">Observaciones de Cierre:</label>
+						<textarea name="observacionesCierre" id="observacionesCierre" class="form-control"
+							placeholder="Comentarios finales sobre el proceso" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>

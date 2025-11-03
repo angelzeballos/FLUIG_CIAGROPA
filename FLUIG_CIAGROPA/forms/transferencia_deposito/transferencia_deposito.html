@@ -1,0 +1,437 @@
+<html>
+
+<head>
+	<!-- Fluig core -->
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css" />
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+	<!-- Plugins -->
+	<script type="text/javascript" src="jquery.mask.min.js"></script>
+	<script type="text/javascript" src="jquery.masMoney.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="pivot.js"></script>
+
+	<!-- Application -->
+	<link rel="stylesheet" rel="stylesheet" href="custom.css">
+	<link rel="stylesheet" rel="stylesheet" href="pivot.css">
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="activities.js"></script>
+	<script type="text/javascript" src="enableFields.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+
+</head>
+
+<body>
+	<div class="fluig-style-guide">
+		<form name="form" role="form">
+			<section class="form-hidden-fields">
+				<h2 class="sr-only">Metadata</h2>
+				<div class="hidden-group">
+					<!-- Controles ocultos -->
+					<input type="hidden" id="codEmpresa" name="codEmpresa">
+					<input type="hidden" id="intActividad" name="intActividad" value="0">
+					<input type="hidden" id="ultActividad" name="ultActividad" value="0">
+					<!-- -->
+				</div>
+			</section>
+
+
+			<!-- Titulo del Formulario -->
+			<div class="panel panel-default" id="panel-titulo">
+				<div class="panel-body text-center">
+					<h1>Solicitud de Transferencia de Depósito</h1>
+				</div>
+			</div>
+
+			<!-- Panel datos del solicitante-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="nombreSolicitante">Solicitante</label>
+							<input type="text" class="form-control input-standart" id="nombreSolicitante"
+								name="nombreSolicitante" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroSolicitud">Número de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="numeroSolicitud"
+								name="numeroSolicitud" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaSolicitud">Fecha de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="fechaSolicitud"
+								name="fechaSolicitud" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Cabezera de detalles-->
+			<div class="panel panel-ciagropa" id="panel-detalles">
+				<div class="panel-heading">
+					<h3 class="panel-title">Detalles de Transferencia</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="nombreSucursal">Sucursal</label>
+							<input type="text" class="form-control input-standart" id="nombreSucursal"
+								name="nombreSucursal" value="Villeta" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroDocumento">Documento</label>
+							<input type="text" class="form-control input-standart" id="numeroDocumento"
+								name="numeroDocumento" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroOP">Orden de Producción</label>
+							<input type="text" class="form-control input-standart" id="numeroOP" name="numeroOP">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Datos para transferencia-->
+			<div class="panel panel-ciagropa" id="panel-transferencia">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Detalles para Transferencia
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group row">
+
+						<!-- Seleccionar depósito Origen -->
+						<div class="col-md-6">
+							<label for="depositoOrigen">Depósito Origen</label>
+							<input type="zoom" class="form-control input-standart" id="depositoOrigen"
+								name="depositoOrigen" zoomvalue="COD_DEPOSITO" data-zoom="{
+								'displayKey':'DESC_DEPOSITO',
+								'datasetId':'ds_dsto_cia',
+								'placeholder':'Seleccione un depósito origen',
+								'maximumSelectionLength':1,
+								'fields':[
+									{
+									'field':'COD_DEPOSITO',
+									'label':'Código',
+									'standart':'true',
+									'search':'true'
+									},
+									{
+									'field':'DESC_DEPOSITO',
+									'label':'Depósito',
+									'standart':'true',
+									'search':'true'
+									}
+								]
+							}" data-zoom-return="COD_DEPOSITO,DESC_DEPOSITO:depositoOrigen,descDepositoOrigen">
+							<input type="hidden" id="descDepositoOrigen" name="descDepositoOrigen">
+						</div>
+
+						<!-- Seleccionar depósito Destino -->
+						<div class="col-md-6">
+							<label for="depositoDestino">Depósito Destino</label>
+							<input type="zoom" class="form-control input-standart" id="depositoDestino"
+								name="depositoDestino" zoomvalue="COD_DEPOSITO" data-zoom="{
+								'displayKey':'DESC_DEPOSITO',
+								'datasetId':'ds_dsto_cia',
+								'placeholder':'Seleccione un depósito destino',
+								'maximumSelectionLength':1,
+								'fields':[
+									{
+									'field':'COD_DEPOSITO',
+									'label':'Código',
+									'standart':'true',
+									'search':'true'
+									},
+									{
+									'field':'DESC_DEPOSITO',
+									'label':'Depósito',
+									'standart':'true',
+									'search':'true'
+									}
+								]
+							}" data-zoom-return="COD_DEPOSITO,DESC_DEPOSITO:depositoDestino,descDepositoDestino">
+							<input type="hidden" id="descDepositoDestino" name="descDepositoDestino">
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+						<!-- Seleccionar Producto -->
+						<div class="col-md-12">
+							<label for="zoomProducto">Producto</label>
+							<input type="zoom" class="form-control input-standart" id="zoomProducto" name="zoomProducto"
+								zoomvalue="COD_PRODUCTO" data-zoom="{
+								'displayKey':'DESC_PRODUCTO',
+								'datasetId':'ds_table_O_D',
+								'placeholder':'Seleccione un producto',
+								'maximumSelectionLength':50,
+								'fields':[
+									{
+										'field':'COD_PRODUCTO',
+										'label':'Código',
+										'standart':'true',
+										'search':'true'
+									},
+									{
+										'field':'DESC_PRODUCTO',
+										'label':'Producto',
+										'standart':'true',
+										'search':'true'
+									},
+									{
+										'field':'LOTE',
+										'label':'Lote',
+										'standart':'true',
+										'search':'true'
+									},
+									{
+										'field':'CANTIDAD',
+										'label':'Cantidad',
+										'standart':'true',
+										'search':'true'
+									},
+									{
+										'field':'FECHA_VALIDEZ',
+										'label':'Fecha de Validez',
+										'standart':'true',
+										'search':'true'
+									}
+								]
+							}" data-zoom-return="COD_PRODUCTO,DESC_PRODUCTO,LOTE,CANTIDAD,FECHA_VALIDEZ:zoomProducto,descProducto,lote,cantidad,fechaValidez">
+							<input type="hidden" id="descProducto" name="descProducto">
+							<input type="hidden" id="lote" name="lote">
+							<input type="hidden" id="cantidad" name="cantidad">
+							<input type="hidden" id="fechaValidez" name="fechaValidez">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="table-responsive">
+							<table class="table table-condensed table-items" id="tablaItems" tablename="tablaItems"
+								nodeletebutton="true" noaddbutton="true"
+								style="vertical-align: inherit; table-layout: auto;">
+								<thead>
+									<tr>
+										<th class="btn-agregar-item">
+											<button class="btn btn-success btnAgregarItem edt-ajuste"
+												onclick="addLINHA()">+</button>
+										</th>
+										<th>Depósito Origen</th>
+										<th>Depósito Destino</th>
+										<th>Producto</th>
+										<th>Lote</th>
+										<th>Cantidad</th>
+										<th>Fecha Válidez</th>
+										<th class="btn-eliminar-item"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="rowTabItens" id="rowTabItens">
+										<td class="btn-agregar-item">
+										</td>
+										<td id="clDepositoOrigen">
+											<input type="text" class="form-control" id="itDepositoOrigen"
+												name="itDepositoOrigen" readonly>
+										</td>
+										<td id="clDepositoDestino">
+											<input type="text" class="form-control" id="itDepositoDestino"
+												name="itDepositoDestino" readonly>
+										</td>
+										<td id="clDescProducto">
+											<input type="text" class="form-control" id="itDescProducto"
+												name="itDescProducto">
+										</td>
+										<td id="clLote">
+											<input type="text" class="form-control" id="itLote" name="itLote" readonly>
+										</td>
+										<td id="clCantidad">
+											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
+										</td>
+										<td id="clFechaValidez">
+											<input type="text" class="form-control" id="itFechaValidez"
+												name="itFechaValidez" readonly>
+										</td>
+										<td class="btn-eliminar-item">
+											<button class="btn btn-danger btnRemoveItem edt-ajuste"
+												onclick="removeLINHA(this)">-</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="cantidadTotal">Cantidad Total a Transferir</label>
+							<input type="text" class="form-control input-standart" id="cantidadTotal"
+								name="cantidadTotal" readonly>
+						</div>
+						<div class="col-md-6">
+							<label for="observacionTransferencia">Observaciones</label>
+							<textarea name="observacionTransferencia" id="observacionTransferencia" class="form-control"
+								placeholder="Ingresar observación" rows="5"></textarea>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Panel Aprobación Supervisor Origen-->
+			<div class="panel panel-ciagropa" id="panel-aprobacion-supervisor-origen">
+				<div class="panel-heading">
+					<h3 class="panel-title">Aprobación Supervisor Origen</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableOrigen">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableOrigen"
+								name="responsableOrigen" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionSupOrigen">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionSupOrigen"
+								name="fechaAprobacionSupOrigen" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="cantidadTotalOrigen">Cantidad Total a Transferir</label>
+							<input type="text" class="form-control input-standart" id="cantidadTotalOrigen"
+								name="cantidadTotalOrigen" readonly>
+						</div>
+					</div>
+					<label>Decisión Supervisor Depósito Origen:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoSupervisorOrigen" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoSupervisorOrigen"
+									name="decisionSupervisorOrigen" value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoSupervisorOrigen" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoSupervisorOrigen"
+									name="decisionSupervisorOrigen" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="ajusteSupervisorOrigen" class="radio-label radio-ajuste">
+								<input type="radio" class="form-control" id="ajusteSupervisorOrigen"
+									name="decisionSupervisorOrigen" value="ajuste">
+								<span class="radio-text">Ajuste</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosSupervisorOrigenContainer">
+						<div class="col-md-6">
+							<label for="comentariosSupervisorOrigen">Comentarios:</label>
+							<textarea name="comentariosSupervisorOrigen" id="comentariosSupervisorOrigen"
+								class="form-control" placeholder="Ingresar comentarios" rows="5"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Aprobación Supervisor Destino-->
+			<div class="panel panel-ciagropa" id="panel-aprobacion-supervisor-destino">
+				<div class="panel-heading">
+					<h3 class="panel-title">Aprobación Supervisor Destino</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableDestino">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableDestino"
+								name="responsableDestino" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionSupDestino">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionSupDestino"
+								name="fechaAprobacionSupDestino" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="cantidadTotalDestino">Cantidad Total a Transferir</label>
+							<input type="text" class="form-control input-standart" id="cantidadTotalDestino"
+								name="cantidadTotalDestino" readonly>
+						</div>
+					</div>
+					<label>Decisión Supervisor Depósito Destino:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoSupervisorDestino" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoSupervisorDestino"
+									name="decisionSupervisorDestino" value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoSupervisorDestino" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoSupervisorDestino"
+									name="decisionSupervisorDestino" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="ajusteSupervisorDestino" class="radio-label radio-ajuste">
+								<input type="radio" class="form-control" id="ajusteSupervisorDestino"
+									name="decisionSupervisorDestino" value="ajuste">
+								<span class="radio-text">Ajuste</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosSupervisorDestinoContainer">
+						<div class="col-md-6">
+							<label for="comentariosSupervisorDestino">Comentarios:</label>
+							<textarea name="comentariosSupervisorDestino" id="comentariosSupervisorDestino"
+								class="form-control" placeholder="Ingresar comentarios" rows="5"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+
+		<!-- Modal de Confirmación de Aprobación -->
+		<div id="modalConfirmacionAprobacion" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						<i class="fluigicon fluigicon-warning-sign icon-warning"></i>
+						Confirmar Transferencia
+					</h3>
+				</div>
+				<div class="modal-body">
+					<p class="modal-message">
+						<strong>¿Está seguro que desea aprobar esta transferencia?</strong>
+					</p>
+					<p class="modal-info">
+						Al confirmar, se procederá con la transferencia de las cantidades aprobadas entre los depósitos.
+					</p>
+					<div class="modal-details">
+						<p><strong>Cantidad Total:</strong> <span id="modalCantidadTotal"></span></p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-cancel" id="btnCancelarAprobacion">
+						<i class="fluigicon fluigicon-cancel"></i>
+						Cancelar
+					</button>
+					<button type="button" class="btn btn-success" id="btnConfirmarAprobacion">
+						<i class="fluigicon fluigicon-ok"></i>
+						Confirmar Transferencia
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>

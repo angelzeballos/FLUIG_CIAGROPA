@@ -1,0 +1,345 @@
+<html>
+
+<head>
+	<!-- Fluig core -->
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css" />
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+	<!-- Plugins -->
+	<script type="text/javascript" src="jquery.mask.min.js"></script>
+	<script type="text/javascript" src="jquery.masMoney.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="pivot.js"></script>
+
+	<!-- Application -->
+	<link rel="stylesheet" rel="stylesheet" href="custom.css">
+	<link rel="stylesheet" rel="stylesheet" href="pivot.css">
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="activities.js"></script>
+	<script type="text/javascript" src="enableFields.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+
+</head>
+
+<body>
+	<div class="fluig-style-guide">
+
+		<form name="form" role="form">
+			<section class="form-hidden-fields">
+				<h2 class="sr-only">Metadata</h2>
+				<div class="hidden-group">
+					<!-- Controles ocultos -->
+					<input type="hidden" id="codEmpresa" name="codEmpresa">
+					<input type="hidden" id="intActividad" name="intActividad" value="0">
+					<input type="hidden" id="ultActividad" name="ultActividad" value="0">
+					<!-- -->
+				</div>
+			</section>
+
+			<!-- Titulo del Formulario -->
+			<div class="panel panel-default" id="panel-titulo">
+				<div class="panel-body text-center">
+					<h1>Solicitud de Transferencia de Depósito</h1>
+				</div>
+			</div>
+
+			<!-- Panel datos del solicitante-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="nombreSolicitante">Solicitante</label>
+							<input type="text" class="form-control input-standart" id="nombreSolicitante"
+								name="nombreSolicitante" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroSolicitud">Número de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="numeroSolicitud"
+								name="numeroSolicitud" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaSolicitud">Fecha de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="fechaSolicitud"
+								name="fechaSolicitud" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Solicitud de Compras-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="obsSolicitudCompras">Observaciones de la Solicitud</label>
+							<textarea name="obsSolicitudCompras" id="obsSolicitudCompras" class="form-control"
+								placeholder="Observación sobre solicitud de compras.." rows="5"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel cotizaciones a productos-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Cotizaciones</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="cotizacionDolar">Cotización moneda:</label>
+							<input type="text" class="form-control input-standart" id="cotizacionDolar"
+								name="cotizacionDolar" readonly value="7010 Gs">
+						</div>
+						<div class="col-md-3">
+							<label for="actualizarMoneda">Ultima Actualización:</label>
+							<input type="text" class="form-control input-standart" id="actualizarMoneda"
+								name="actualizarMoneda" readonly value="2025-10-30 10:25:10">
+
+							<div style="display: flex; align-items: center;">
+								<small style="margin-right: 10px;">Sincronizar cotización de moneda</small>
+								<button class="btn btn-success btnSincronizarMoneda edt-ajuste"
+									onclick="sincronizarMoneda()">Sincronizar</button>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<label for="">Cotización de Producto</label>
+							<button class="btn btn btn-success btn-agregar-cotizacion edt-ajuste"
+								id="btnAgregarCotizacion">Agregar</button>
+						</div>
+
+					</div>
+					<div class="form-group row">
+						<div class="table-responsive">
+							<table class="table table-condensed table-items" id="tablaItems" tablename="tablaItems"
+								nodeletebutton="true" noaddbutton="true"
+								style="vertical-align: inherit; table-layout: auto;">
+								<thead>
+									<tr>
+										<th class="btn-agregar-item">
+											<button class="btn btn-success btnAgregarItem edt-ajuste"
+												onclick="addLINHA()">+</button>
+										</th>
+										<th>Producto</th>
+										<th>Cotizante</th>
+										<th>Fabricante</th>
+										<th>Cantidad</th>
+										<th class="btn-ver-detalles"></th>
+										<th class="btn-eliminar-item"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="rowTabItens" id="rowTabItens">
+										<td class="btn-agregar-item">
+										</td>
+										<td id="clCotizante">
+											<input type="text" class="form-control" id="itCotizante" name="itCotizante">
+										</td>
+										<td id="clFabricante">
+											<input type="text" class="form-control" id="itFabricante"
+												name="itFabricante">
+										</td>
+										<td id="clProducto">
+											<input type="text" class="form-control" id="itProducto" name="itProducto">
+										</td>
+										<td id="clPrecio">
+											<input type="text" class="form-control" id="itPrecio" name="itPrecio">
+										</td>
+										<td id="clCantidad">
+											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
+										</td>
+										<td class="btn-ver-detalles">
+                                        <button type="button" class="btn btn-success btn-ver-detalles edt-ajuste"
+												id="btnVerDetalles">Ver Detalles</button>
+										</td>
+										<td class="btn-eliminar-item">
+											<button class="btn btn-danger btnRemoveItem edt-ajuste"
+												onclick="removeLINHA(this)">-</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+		</form>
+
+		<!-- Modal de Confirmación de Cotización -->
+		<div id="modalConfirmacionCotizacion" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						Agregar Cotización de Producto
+					</h3>
+				</div>
+				<form id="formAgregarCotizacion" name="formAgregarCotizacion" class="modal-body">
+					<div class="form-group row">
+						<div class="col-md-6 modal-details">
+							<label for="cotizante">Cotizante:</label>
+							<input type="text" class="input-standart" id="cotizante" name="cotizante"
+								placeholder="Seleccionar cotizante">
+						</div>
+						<div class="col-md-6 modal-details">
+							<label for="fabricante">Fabricante:</label>
+							<input type="text" class="input-standart" id="fabricante" name="fabricante"
+								placeholder="Seleccionar fabricante">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-4 modal-details">
+							<label for="producto">Producto:</label>
+							<input type="text" class="input-standart" id="producto" name="producto"
+								placeholder="Ingrese el producto">
+						</div>
+						<div class="col-md-4 modal-details">
+							<label for="precio">Precio Unitario:</label>
+							<input type="text" class="input-standart" id="precio" name="precio"
+								placeholder="Ingrese el precio">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="cantidad">Cantidad:</label>
+							<input type="text" class="input-standart" id="cantidad" name="cantidad"
+								placeholder="Ingrese la cantidad">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 modal-details">
+							<label for="packaging">Packaging:</label>
+							<input type="text" class="input-standart" id="packaging" name="packaging"
+								placeholder="Ingrese el packaging">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="condicionPago">Condición de Pago:</label>
+							<input type="text" class="input-standart" id="condicionPago" name="condicionPago"
+								placeholder="Ingrese la condición de pago">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="puertoDestino">Puerto Destino:</label>
+							<input type="text" class="input-standart" id="puertoDestino" name="puertoDestino"
+								placeholder="Ingrese el puerto destino">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="incoterm">Incoterm:</label>
+							<input type="text" class="input-standart" id="incoterm" name="incoterm"
+								placeholder="Ingrese el incoterm">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-4 modal-details">
+							<label for="plazoEntrega">Plazo Entrega (Días):</label>
+							<input type="number" class="input-standart" id="plazoEntrega" name="plazoEntrega"
+								placeholder="Ingrese el plazo de entrega">
+						</div>
+						<div class="col-md-4 modal-details">
+							<label for="validez">Validez Presupuesto:</label>
+							<input type="date" class="input-standart" id="validez" name="validez"
+								placeholder="Ingrese la validez del presupuesto">
+						</div>
+						<div class="col-md-4 modal-details">
+							<label for="autorizado">Autorizado:</label>
+							<input type="checkbox" class="input-standart" id="autorizado" name="autorizado"
+								placeholder="Ingrese si está autorizado">
+							<small style="display: block;">Señalar si es autorizado</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-6 modal-details">
+							<label for="observaciones">Observaciones:</label>
+							<textarea style="display: block;" name="observaciones" id="observaciones"
+								class="input-standart" placeholder="Observación sobre la cotización.."
+								rows="5"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-cancel" id="btnCancelarCotizacion">
+							<i class="fluigicon fluigicon-cancel"></i>
+							Cancelar
+						</button>
+						<button type="button" class="btn btn-success" id="btnConfirmarCotizacion">
+							<i class="fluigicon fluigicon-ok"></i>
+							Confirmar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal de Ver Detalles -->
+		<div id="modalVerDetalles" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						Ver Detalles de la Cotización
+					</h3>
+				</div>
+				<form id="formVerDetalles" name="formVerDetalles" class="modal-body">
+					<div class="form-group row">
+						<div class="col-md-3 modal-details">
+							<label for="packaging">Packaging:</label>
+							<input type="text" class="input-standart" id="packagingDetail" name="packagingDetail"
+								placeholder="Ingrese el packaging">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="condicionPago">Condición de Pago:</label>
+							<input type="text" class="input-standart" id="condicionPagoDetail" name="condicionPagoDetail"
+								placeholder="Ingrese la condición de pago">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="puertoDestino">Puerto Destino:</label>
+							<input type="text" class="input-standart" id="puertoDestinoDetail" name="puertoDestinoDetail"
+								placeholder="Ingrese el puerto destino">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="incoterm">Incoterm:</label>
+							<input type="text" class="input-standart" id="incotermDetail" name="incotermDetail"
+								placeholder="Ingrese el incoterm">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 modal-details">
+							<label for="plazoEntrega">Plazo Entrega (Días):</label>
+							<input type="number" class="input-standart" id="plazoEntregaDetail" name="plazoEntregaDetail"
+								placeholder="Ingrese el plazo de entrega">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="autorizado">Autorizado:</label>
+							<input type="checkbox" class="input-standart" id="autorizadoDetail" name="autorizadoDetail"
+								placeholder="Ingrese si está autorizado">
+							<small style="display: block;">Señalar si es autorizado</small>
+						</div>
+						<div class="col-md-6 modal-details">
+							<label for="observaciones">Observaciones:</label>
+							<textarea style="display: block;" name="observacionesDetail" id="observacionesDetail"
+								class="input-standart" placeholder="Observación sobre la cotización.."
+								rows="5"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" id="btnCerrarVerDetalles">
+							<i class="fluigicon fluigicon-ok"></i>
+							Cerrar
+						</button>
+						<button type="button" class="btn btn-success" id="btnConfirmarCompra">
+							<i class="fluigicon fluigicon-ok"></i>
+							Confirmar Cotización
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>
