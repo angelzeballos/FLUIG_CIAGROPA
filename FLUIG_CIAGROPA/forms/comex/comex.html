@@ -158,7 +158,7 @@
 											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
 										</td>
 										<td class="btn-ver-detalles">
-                                        <button type="button" class="btn btn-success btn-ver-detalles edt-ajuste"
+											<button type="button" class="btn btn-success btn-ver-detalles edt-ajuste"
 												id="btnVerDetalles">Ver Detalles</button>
 										</td>
 										<td class="btn-eliminar-item">
@@ -179,73 +179,95 @@
 			<div class="modal-container">
 				<div class="modal-header">
 					<h3 class="modal-title">
-						Agregar Cotización de Producto
+						Agregar Producto a Cotizar
 					</h3>
 				</div>
 				<form id="formAgregarCotizacion" name="formAgregarCotizacion" class="modal-body">
 					<div class="form-group row">
-						<div class="col-md-6 modal-details">
+						<div class="col-md-4 modal-details">
+							<label for="searchProducto">Producto:</label>
+							<div class="input-container">
+								<input type="text" name="searchProducto" id="searchProducto" class="input"
+									placeholder="Ingrese el producto">
+								<div class="highlight"></div>
+							</div>
+							<div id="searchResultsProductos" class="results-container">
+
+							</div>
+						</div>
+						<div class="col-md-4 modal-details">
 							<label for="cotizante">Cotizante:</label>
-							<input type="text" class="input-standart" id="cotizante" name="cotizante"
-								placeholder="Seleccionar cotizante">
+							<div class="input-container">
+								<input type="text" name="cotizante" id="cotizante" class="input"
+									placeholder="Ingrese el cotizante">
+								<div class="highlight"></div>
+							</div>
 						</div>
-						<div class="col-md-6 modal-details">
-							<label for="fabricante">Fabricante:</label>
-							<input type="text" class="input-standart" id="fabricante" name="fabricante"
-								placeholder="Seleccionar fabricante">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-md-4 modal-details">
-							<label for="producto">Producto:</label>
-							<input type="text" class="input-standart" id="producto" name="producto"
-								placeholder="Ingrese el producto">
-						</div>
-						<div class="col-md-4 modal-details">
-							<label for="precio">Precio Unitario:</label>
-							<input type="text" class="input-standart" id="precio" name="precio"
-								placeholder="Ingrese el precio">
-						</div>
-						<div class="col-md-3 modal-details">
+						<div class="col-md-2 modal-details">
 							<label for="cantidad">Cantidad:</label>
-							<input type="text" class="input-standart" id="cantidad" name="cantidad"
-								placeholder="Ingrese la cantidad">
+							<div class="input-container">
+								<input type="text" name="cantidad" id="cantidad" class="input"
+									placeholder="Ingrese la cantidad">
+								<div class="highlight"></div>
+							</div>
+						</div>
+						<div class="col-md-2 modal-details">
+							<label for="packaging">Packaging:</label>
+							<div class="input-container">
+								<input type="text" name="packaging" id="packaging" class="input"
+									placeholder="Ingrese el packaging">
+								<div class="highlight"></div>
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-md-3 modal-details">
-							<label for="packaging">Packaging:</label>
-							<input type="text" class="input-standart" id="packaging" name="packaging"
-								placeholder="Ingrese el packaging">
-						</div>
-						<div class="col-md-3 modal-details">
-							<label for="condicionPago">Condición de Pago:</label>
-							<input type="text" class="input-standart" id="condicionPago" name="condicionPago"
-								placeholder="Ingrese la condición de pago">
+							<label for="condicionPago">Condiciones de Pago:</label>
+							<div class="multi-select-wrapper">
+								<div class="tags-container" id="tagsCondicionPago">
+									<span class="placeholder-text">Selecciona opciones...</span>
+								</div>
+								<select name="condicionPago" id="condicionPago" class="input" multiple
+									style="display: none;">
+									<option value="contado">Contado</option>
+									<option value="credito30">Crédito 30 Días</option>
+									<option value="credito60">Crédito 60 Días</option>
+									<option value="credito90">Crédito 90 Días</option>
+									<option value="credito180">Crédito 180 Días</option>
+								</select>
+								<div class="dropdown-options" id="dropdownCondicionPago">
+									<div class="option-item" data-value="contado">Contado</div>
+									<div class="option-item" data-value="credito30">Crédito 30 Días</div>
+									<div class="option-item" data-value="credito60">Crédito 60 Días</div>
+									<div class="option-item" data-value="credito90">Crédito 90 Días</div>
+									<div class="option-item" data-value="credito180">Crédito 180 Días</div>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="puertoDestino">Puerto Destino:</label>
-							<input type="text" class="input-standart" id="puertoDestino" name="puertoDestino"
-								placeholder="Ingrese el puerto destino">
+							<div class="input-container">
+								<input type="text" name="puertoDestino" id="puertoDestino" class="input"
+									placeholder="Ingrese el puerto destino">
+								<div class="highlight"></div>
+							</div>
 						</div>
-						<div class="col-md-3 modal-details">
-							<label for="incoterm">Incoterm:</label>
-							<input type="text" class="input-standart" id="incoterm" name="incoterm"
-								placeholder="Ingrese el incoterm">
+						<div class="col-md-2 modal-details">
+							<label for="etd">ETD:</label>
+							<div class="input-container">
+								<input type="date" name="etd" id="etd" class="input" placeholder="Ingrese la ETD">
+								<div class="highlight"></div>
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-md-4 modal-details">
-							<label for="plazoEntrega">Plazo Entrega (Días):</label>
-							<input type="number" class="input-standart" id="plazoEntrega" name="plazoEntrega"
-								placeholder="Ingrese el plazo de entrega">
+						<div class="col-md-2 modal-details">
+							<label for="validezCotizacion">Validez Cotización:</label>
+							<div class="input-container">
+								<input type="date" name="validezCotizacion" id="validezCotizacion" class="input"
+									placeholder="Ingrese la validez de la cotización">
+								<div class="highlight"></div>
+							</div>
 						</div>
-						<div class="col-md-4 modal-details">
-							<label for="validez">Validez Presupuesto:</label>
-							<input type="date" class="input-standart" id="validez" name="validez"
-								placeholder="Ingrese la validez del presupuesto">
-						</div>
-						<div class="col-md-4 modal-details">
+						<div class="col-md-2 modal-details">
 							<label for="autorizado">Autorizado:</label>
 							<input type="checkbox" class="input-standart" id="autorizado" name="autorizado"
 								placeholder="Ingrese si está autorizado">
@@ -254,10 +276,10 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-md-6 modal-details">
-							<label for="observaciones">Observaciones:</label>
-							<textarea style="display: block;" name="observaciones" id="observaciones"
-								class="input-standart" placeholder="Observación sobre la cotización.."
-								rows="5"></textarea>
+							<label for="supplyComments">Supply Comments:</label>
+							<textarea name="supplyComments" id="supplyComments" class="input"
+								placeholder="Ingrese los comentarios de la cotización"></textarea>
+							<div class="highlight"></div>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -285,19 +307,19 @@
 				<form id="formVerDetalles" name="formVerDetalles" class="modal-body">
 					<div class="form-group row">
 						<div class="col-md-3 modal-details">
-							<label for="packaging">Packaging:</label>
+							<label for="packagingDetalle">Packaging:</label>
 							<input type="text" class="input-standart" id="packagingDetail" name="packagingDetail"
 								placeholder="Ingrese el packaging">
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="condicionPago">Condición de Pago:</label>
-							<input type="text" class="input-standart" id="condicionPagoDetail" name="condicionPagoDetail"
-								placeholder="Ingrese la condición de pago">
+							<input type="text" class="input-standart" id="condicionPagoDetail"
+								name="condicionPagoDetail" placeholder="Ingrese la condición de pago">
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="puertoDestino">Puerto Destino:</label>
-							<input type="text" class="input-standart" id="puertoDestinoDetail" name="puertoDestinoDetail"
-								placeholder="Ingrese el puerto destino">
+							<input type="text" class="input-standart" id="puertoDestinoDetail"
+								name="puertoDestinoDetail" placeholder="Ingrese el puerto destino">
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="incoterm">Incoterm:</label>
@@ -308,8 +330,8 @@
 					<div class="form-group row">
 						<div class="col-md-3 modal-details">
 							<label for="plazoEntrega">Plazo Entrega (Días):</label>
-							<input type="number" class="input-standart" id="plazoEntregaDetail" name="plazoEntregaDetail"
-								placeholder="Ingrese el plazo de entrega">
+							<input type="number" class="input-standart" id="plazoEntregaDetail"
+								name="plazoEntregaDetail" placeholder="Ingrese el plazo de entrega">
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="autorizado">Autorizado:</label>

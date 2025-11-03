@@ -7,6 +7,8 @@ window.onload = function () {
     init();
     inicializarModalAprobacion();
     inicializarModalVerDetalles();
+    inicializarBusquedaProductos();
+    inicializarMultiSelect();
 }
 
 // =================== Inicializacion y Contexto ====================
@@ -267,7 +269,7 @@ function confirmarAprobacion() {
 }
 
 function cancelarAprobacion() {
-    
+
     // Cerrar el modal
     cerrarModalCotizacion();
 }
@@ -337,12 +339,9 @@ function cerrarModalVerDetalles() {
 // =================== Funciones de tabla ====================
 
 function addLINHA() {
-    
-    // 1. Llama a la función de Fluig para agregar una nueva fila
-    //    "tablaItems" es el 'tablename' que definiste en tu <table>
+
     var newRowId = wdkAddChild("tablaItems");
 
-    // 2. Obtener los valores de los campos del cabecero
     var descOrigen = $("#descDepositoOrigen").val();
     var descDestino = $("#descDepositoDestino").val();
     var descProducto = $("#descProducto").val();
@@ -351,18 +350,13 @@ function addLINHA() {
     var fechaValidez = $("#fechaValidez").val();
 
 
-    // 3. Asignar esos valores a los campos de la NUEVA fila
-    //    El ID de un campo en una fila 'pai-filho' es: idCampo + '___' + indice
     $("#itDepositoOrigen___" + newRowId).val(descOrigen);
     $("#itDepositoDestino___" + newRowId).val(descDestino);
     $("#itDescProducto___" + newRowId).val(descProducto);
     $("#itLote___" + newRowId).val(lote);
     $("#itCantidad___" + newRowId).val(cantidad);
     $("#itFechaValidez___" + newRowId).val(fechaValidez);
-    
-    // 4. (Opcional) Limpiamos los campos del producto del cabecero
-    //    Usamos reloadZoom() para limpiar el 'display' del zoom de producto
-    //    Si no tienes esa función, usa solo los .val("")
+
     if (window.reloadZoom) {
         window.reloadZoom('zoomProducto', '');
     } else {
@@ -375,10 +369,194 @@ function addLINHA() {
 
 }
 
-
 function removeLINHA(button) {
     // 'button' es el <button> que se presionó.
     // fnWdkRemoveChild se encarga de encontrar el <tr> padre y eliminarlo.
     fnWdkRemoveChild(button);
 }
 
+// =================== Funciones de búsqueda de productos ====================
+
+function inicializarBusquedaProductos() {
+    let searchTimeout;
+    let allProducts = [];
+
+    // Cargar todos los productos al inicio
+    loadAllProducts();
+
+    $('#searchProducto').on('input', function () {
+        const searchTerm = $(this).val().trim().toLowerCase();
+
+        clearTimeout(searchTimeout);
+
+        searchTimeout = setTimeout(function () {
+            filterAndDisplayProducts(searchTerm);
+        }, 300);
+    });
+
+    function loadAllProducts() {
+        $('#searchResultsProductos').html('<div class="loading">Cargando productos...</div>');
+
+        const dataset = DatasetFactory.getDataset(
+            'ds_pa_cia',
+            null,
+            null,
+            null
+        );
+
+        if (dataset && dataset.values) {
+            allProducts = dataset.values;
+            console.log('Productos cargados:', allProducts.length);
+        }
+
+        $('#searchResultsProductos').empty();
+    }
+
+    function filterAndDisplayProducts(searchTerm) {
+        if (searchTerm.length === 0) {
+            $('#searchResultsProductos').empty();
+            return;
+        }
+
+        const filteredProducts = allProducts.filter(function (product) {
+            const productName = (product['DESC_PA'] || '').toLowerCase();
+            return productName.includes(searchTerm);
+        });
+
+        displayResults(filteredProducts, searchTerm);
+    }
+
+    function displayResults(products, searchTerm) {
+        const resultsContainer = $('#searchResultsProductos');
+        resultsContainer.empty();
+
+        if (!products || products.length === 0) {
+            resultsContainer.html('<div class="no-results">No se encontraron productos</div>');
+            return;
+        }
+
+        const maxResults = 50;
+        const displayProducts = products.slice(0, maxResults);
+
+        const resultsList = $('<ul class="results-list"></ul>');
+
+        displayProducts.forEach(function (product) {
+            const item = $('<li class="result-item"></li>');
+
+            const productName = product['DESC_PA'] || 'Sin nombre';
+            const productCode = product['COD_PA'] || '';
+
+            const highlightedTitle = highlightText(productName, searchTerm);
+
+            item.html(`
+                <div class="result-title">${highlightedTitle}</div>
+                ${productCode ? `<div class="result-code">${productCode}</div>` : ''}
+            `);
+
+            item.on('click', function () {
+                selectResult(product);
+            });
+
+            resultsList.append(item);
+        });
+
+        resultsContainer.append(resultsList);
+
+        if (products.length > maxResults) {
+            resultsContainer.append(`<div class="more-results">Mostrando ${maxResults} de ${products.length} resultados</div>`);
+        }
+    }
+
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+
+        const regex = new RegExp('(' + searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
+    }
+
+    function selectResult(product) {
+        console.log('Producto seleccionado:', product);
+
+        $('#searchProducto').val(product['DESC_PA']);
+
+        $('#searchResultsProductos').empty();
+
+    }
+};
+
+// =================== Funciones de selección de condiciones de pago ====================
+
+function inicializarMultiSelect() {
+    const tagsContainer = $('#tagsCondicionPago');
+    const dropdown = $('#dropdownCondicionPago');
+    const select = $('#condicionPago');
+    const placeholder = tagsContainer.find('.placeholder-text');
+
+    tagsContainer.on('click', function (e) {
+        if (!$(e.target).hasClass('tag-remove')) {
+            dropdown.toggleClass('open');
+            tagsContainer.toggleClass('open');
+        }
+    });
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.multi-select-wrapper').length) {
+            dropdown.removeClass('open');
+            tagsContainer.removeClass('open');
+        }
+    });
+
+    $('.option-item').on('click', function () {
+        const value = $(this).data('value');
+        const text = $(this).text();
+
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', false);
+            removeTag(value);
+        } else {
+            $(this).addClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', true);
+            addTag(value, text);
+        }
+
+        updatePlaceholder();
+    });
+
+    function addTag(value, text) {
+        const tag = $(`
+            <span class="tag" data-value="${value}">
+                ${text}
+                <span class="tag-remove" onclick="eliminarTag('${value}')">×</span>
+            </span>
+        `);
+        placeholder.hide();
+        tagsContainer.append(tag);
+    }
+
+    function removeTag(value) {
+        tagsContainer.find(`.tag[data-value="${value}"]`).remove();
+        updatePlaceholder();
+    }
+
+    function updatePlaceholder() {
+        if (tagsContainer.find('.tag').length === 0) {
+            placeholder.show();
+        } else {
+            placeholder.hide();
+        }
+    }
+
+    window.eliminarTag = function (value) {
+        event.stopPropagation();
+        $(`.option-item[data-value="${value}"]`).removeClass('selected');
+        select.find(`option[value="${value}"]`).prop('selected', false);
+        removeTag(value);
+    };
+}
+
+function obtenerCondicionesPago() {
+    const valores = $('#condicionPago').val();
+    console.log('Condiciones seleccionadas:', valores);
+    return valores;
+}

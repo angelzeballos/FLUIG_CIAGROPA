@@ -1,0 +1,124 @@
+/* ========================  INPUT STYLES  ========================= */
+
+/* ========================  Input con Highlight  ========================= */
+
+.input-container {
+    position: relative;
+}
+
+.input {
+    font-size: 1em;
+    padding: 0.6em 1em;
+    border: none;
+    border-radius: 6px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    max-width: 200px;
+    color: #333;
+}
+
+.input:hover {
+    background-color: #f2f2f2;
+}
+
+.input:focus {
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input::placeholder {
+    color: #999;
+}
+
+.highlight {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4AA148;
+    transition: width 0.3s ease;
+}
+
+.input:focus+.highlight {
+    width: 100%;
+}
+
+@keyframes input-focus {
+    from {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    to {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.input:focus {
+    animation: input-focus 0.3s ease;
+}
+
+/* ========================  Input con Search  ========================= */
+
+.results-container {
+	position: relative;
+	max-height: 400px;
+	overflow-y: auto;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: white;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	display: none;
+}
+
+.results-container:not(:empty) {
+	display: block;
+}
+
+.results-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.result-item {
+	padding: 12px;
+	border-bottom: 1px solid #f0f0f0;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.result-item:hover {
+	background-color: #f5f5f5;
+}
+
+.result-item:last-child {
+	border-bottom: none;
+}
+
+.result-title {
+	font-weight: 500;
+	color: #333;
+	margin-bottom: 4px;
+}
+
+.result-description {
+	font-size: 12px;
+	color: #666;
+}
+
+.loading, .no-results {
+	padding: 20px;
+	text-align: center;
+	color: #666;
+}
+
+mark {
+	background-color: #ffeb3b;
+	padding: 0 2px;
+	font-weight: bold;
+}

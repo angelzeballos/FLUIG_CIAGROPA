@@ -36,7 +36,7 @@
 			<!-- Titulo del Formulario -->
 			<div class="panel panel-default" id="panel-titulo">
 				<div class="panel-body text-center">
-					<h1>Solicitud de Transferencia de Dep�sito</h1>					
+					<h1>Solicitud de Transferencia de Dep�sito</h1>
 				</div>
 			</div>
 
@@ -49,11 +49,13 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<label for="nombreSolicitante">Solicitante</label>
-							<input type="text" class="fomr-control" id="nombreSolicitante" name="nombreSolicitante" readonly>
+							<input type="text" class="fomr-control" id="nombreSolicitante" name="nombreSolicitante"
+								readonly>
 						</div>
 						<div class="col-md-3">
 							<label for="numeroSolicitud">N�mero de Solicitud</label>
-							<input type="text" class="form-control" id="numeroSolicitud" name="numeroSolicitud" readonly>
+							<input type="text" class="form-control" id="numeroSolicitud" name="numeroSolicitud"
+								readonly>
 						</div>
 						<div class="col-md-3">
 							<label for="fechaSolicitud">Fecha de Solicitud</label>
@@ -70,18 +72,11 @@
 
 </html>
 
-
-
-
-
-
-<!-- Seleccionar depósito Destino -->
+<!-- Componente Zoom -->
 <div class="col-md-3">
 	<label for="depositoDestino">Depósito Destino</label>
-	<input type="zoom" class="form-control input-standart" id="depositoDestino"
-		name="depositoDestino" zoomvalue="DESC_DEPOSITO" 
-		
-		data-zoom="{
+	<input type="zoom" class="form-control input-standart" id="depositoDestino" name="depositoDestino"
+		zoomvalue="DESC_DEPOSITO" data-zoom="{
 		'displayKey':'DESC_DEPOSITO',
 		'datasetId':'ds_dsto_cia',
 		'maximumSelectionLength':1,
@@ -99,9 +94,489 @@
 			'search':'true'
 			}
 		]
-	}"
-	
-	data-zoom-return="COD_DEPOSITO,DESC_DEPOSITO:depositoDestino,descDepositoDestino"
-	>
+	}" data-zoom-return="COD_DEPOSITO,DESC_DEPOSITO:depositoDestino,descDepositoDestino">
 	<input type="hidden" id="descDepositoDestino" name="descDepositoDestino">
 </div>
+
+<!-- Componente para buscar y seleccionar productos Cheto-->
+<div class="input-container">
+	<input type="text" name="text" class="input" placeholder="Enter text">
+	<div class="highlight"></div>
+</div>
+
+
+<div class="input-container">
+	<input type="text" id="searchInput" name="text" class="input" placeholder="Buscar..." autocomplete="off">
+	<div class="highlight"></div>
+</div>
+
+<div id="searchResults" class="results-container">
+	<!-- Los resultados aparecerán aquí -->
+</div>
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Múltiple</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .multi-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .selected-items {
+            min-height: 50px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .selected-items:hover {
+            border-color: #667eea;
+        }
+
+        .selected-items.open {
+            border-color: #667eea;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            animation: slideIn 0.2s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
+            padding: 0 4px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .tag-remove:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .placeholder {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .dropdown.open {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-box {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #667eea;
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .option-item:hover {
+            background: #f5f5f5;
+        }
+
+        .option-item.selected {
+            background: #e8ebff;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .option-item.selected .checkbox {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .option-item.selected .checkbox::after {
+            display: block;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h3 {
+            margin-bottom: 10px;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .result-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Selecciona Productos</h2>
+        
+        <div class="multi-select-container">
+            <div class="selected-items" id="selectedItems">
+                <span class="placeholder">Selecciona opciones...</span>
+            </div>
+            
+            <div class="dropdown" id="dropdown">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar...">
+                </div>
+                <ul class="options-list" id="optionsList"></ul>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-primary" onclick="getSelectedValues()">Obtener Valores</button>
+            <button class="btn-secondary" onclick="clearSelection()">Limpiar Todo</button>
+        </div>
+
+        <div class="result" id="result">
+            <h3>Valores Seleccionados:</h3>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de ejemplo - Reemplaza esto con tu dataset de Fluig
+        const allOptions = [
+            { id: 1, name: 'AZOXISTROBINA 20% + TEBUCONAZOL 20% SC' },
+            { id: 2, name: 'AZOXISTROBINA 23% + PROTIOCONAZOL 22% SC' },
+            { id: 3, name: 'AZOXISTROBINA 98% TC' },
+        ];
+
+        let selectedItems = [];
+        let filteredOptions = [...allOptions];
+
+        const selectedItemsDiv = document.getElementById('selectedItems');
+        const dropdown = document.getElementById('dropdown');
+        const optionsList = document.getElementById('optionsList');
+        const searchInput = document.getElementById('searchInput');
+        const resultDiv = document.getElementById('result');
+
+        // Inicializar
+        renderOptions();
+
+        // Toggle dropdown
+        selectedItemsDiv.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('tag-remove')) {
+                dropdown.classList.toggle('open');
+                selectedItemsDiv.classList.toggle('open');
+                if (dropdown.classList.contains('open')) {
+                    searchInput.focus();
+                }
+            }
+        });
+
+        // Cerrar dropdown al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.multi-select-container')) {
+                dropdown.classList.remove('open');
+                selectedItemsDiv.classList.remove('open');
+            }
+        });
+
+        // Búsqueda
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            filteredOptions = allOptions.filter(option => 
+                option.name.toLowerCase().includes(searchTerm)
+            );
+            renderOptions();
+        });
+
+        // Renderizar opciones
+        function renderOptions() {
+            optionsList.innerHTML = '';
+
+            if (filteredOptions.length === 0) {
+                optionsList.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
+                return;
+            }
+
+            filteredOptions.forEach(option => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                
+                const isSelected = selectedItems.some(item => item.id === option.id);
+                if (isSelected) {
+                    li.classList.add('selected');
+                }
+
+                li.innerHTML = `
+                    <div class="checkbox"></div>
+                    <span>${option.name}</span>
+                `;
+
+                li.addEventListener('click', () => toggleOption(option));
+                optionsList.appendChild(li);
+            });
+        }
+
+        // Toggle opción
+        function toggleOption(option) {
+            const index = selectedItems.findIndex(item => item.id === option.id);
+            
+            if (index > -1) {
+                selectedItems.splice(index, 1);
+            } else {
+                selectedItems.push(option);
+            }
+
+            renderSelectedItems();
+            renderOptions();
+        }
+
+        // Renderizar items seleccionados
+        function renderSelectedItems() {
+            selectedItemsDiv.innerHTML = '';
+
+            if (selectedItems.length === 0) {
+                selectedItemsDiv.innerHTML = '<span class="placeholder">Selecciona opciones...</span>';
+                return;
+            }
+
+            selectedItems.forEach(item => {
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `
+                    <span>${item.name}</span>
+                    <span class="tag-remove" onclick="removeItem(${item.id})">×</span>
+                `;
+                selectedItemsDiv.appendChild(tag);
+            });
+        }
+
+        // Remover item
+        function removeItem(id) {
+            event.stopPropagation();
+            selectedItems = selectedItems.filter(item => item.id !== id);
+            renderSelectedItems();
+            renderOptions();
+        }
+
+        // Limpiar selección
+        function clearSelection() {
+            selectedItems = [];
+            renderSelectedItems();
+            renderOptions();
+            resultDiv.classList.remove('show');
+        }
+
+        // Obtener valores seleccionados
+        function getSelectedValues() {
+            const resultContent = document.getElementById('resultContent');
+            
+            if (selectedItems.length === 0) {
+                resultContent.innerHTML = '<p style="color: #999;">No hay items seleccionados</p>';
+            } else {
+                let html = '';
+                selectedItems.forEach((item, index) => {
+                    html += `<div class="result-item">${index + 1}. ${item.name} (ID: ${item.id})</div>`;
+                });
+                resultContent.innerHTML = html;
+            }
+
+            resultDiv.classList.add('show');
+            console.log('Items seleccionados:', selectedItems);
+        }
+    </script>
+</body>
+</html>
+-->
+
+
+
+
