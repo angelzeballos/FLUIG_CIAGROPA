@@ -578,5 +578,118 @@
 -->
 
 
+<div class="col-md-3 modal-details">
+    <label for="condicionPago">Condiciones de Pago:</label>
+    <div class="multi-select-wrapper">
+        <div class="tags-container" id="tagsCondicionPago">
+            <span class="placeholder-text">Selecciona opciones...</span>
+        </div>
+        <select name="condicionPago" id="condicionPago" class="input" multiple style="display: none;">
+            <option value="contado">Contado</option>
+            <option value="credito30">Crédito 30 Días</option>
+            <option value="credito60">Crédito 60 Días</option>
+            <option value="credito90">Crédito 90 Días</option>
+            <option value="credito180">Crédito 180 Días</option>
+        </select>
+        <div class="dropdown-options" id="dropdownCondicionPago">
+            <div class="option-item" data-value="contado">Contado</div>
+            <div class="option-item" data-value="credito30">Crédito 30 Días</div>
+            <div class="option-item" data-value="credito60">Crédito 60 Días</div>
+            <div class="option-item" data-value="credito90">Crédito 90 Días</div>
+            <div class="option-item" data-value="credito180">Crédito 180 Días</div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+	function inicializarMultiSelect() {
+    const tagsContainer = $('#tagsCondicionPago');
+    const dropdown = $('#dropdownCondicionPago');
+    const select = $('#condicionPago');
+    const placeholder = tagsContainer.find('.placeholder-text');
+
+    // Toggle dropdown
+    tagsContainer.on('click', function(e) {
+        if (!$(e.target).hasClass('tag-remove')) {
+            dropdown.toggleClass('open');
+            tagsContainer.toggleClass('open');
+        }
+    });
+
+    // Cerrar dropdown al hacer clic fuera
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.multi-select-wrapper').length) {
+            dropdown.removeClass('open');
+            tagsContainer.removeClass('open');
+        }
+    });
+
+    // Seleccionar opción
+    $('.option-item').on('click', function() {
+        const value = $(this).data('value');
+        const text = $(this).text();
+        
+        if ($(this).hasClass('selected')) {
+            // Deseleccionar
+            $(this).removeClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', false);
+            removeTag(value);
+        } else {
+            // Seleccionar
+            $(this).addClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', true);
+            addTag(value, text);
+        }
+        
+        updatePlaceholder();
+    });
+
+    function addTag(value, text) {
+        const tag = $(`
+            <span class="tag" data-value="${value}">
+                ${text}
+                <span class="tag-remove" onclick="eliminarTag('${value}')">×</span>
+            </span>
+        `);
+        placeholder.hide();
+        tagsContainer.append(tag);
+    }
+
+    function removeTag(value) {
+        tagsContainer.find(`.tag[data-value="${value}"]`).remove();
+        updatePlaceholder();
+    }
+
+    function updatePlaceholder() {
+        if (tagsContainer.find('.tag').length === 0) {
+            placeholder.show();
+        } else {
+            placeholder.hide();
+        }
+    }
+
+    // Función global para eliminar tags
+    window.eliminarTag = function(value) {
+        event.stopPropagation();
+        $(`.option-item[data-value="${value}"]`).removeClass('selected');
+        select.find(`option[value="${value}"]`).prop('selected', false);
+        removeTag(value);
+    };
+}
+
+// Inicializar cuando el documento esté listo
+$(document).ready(function() {
+    inicializarMultiSelect();
+});
+
+// Función para obtener valores seleccionados
+function obtenerCondicionesPago() {
+    const valores = $('#condicionPago').val();
+    console.log('Condiciones seleccionadas:', valores);
+    return valores;
+}
+</script>
 
 

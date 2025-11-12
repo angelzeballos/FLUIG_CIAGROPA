@@ -407,5 +407,348 @@
     </void>
    </array>
   </void>
+  <void method="put">
+   <string>forms</string>
+   <object class="java.util.LinkedList">
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>FLUIGADHOC</string>
+      </void>
+      <void property="documentDescription">
+       <string>FLUIGADHOC</string>
+      </void>
+      <void property="documentId">
+       <int>3</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>FLUIGADHOCPROCESS</string>
+      </void>
+      <void property="documentDescription">
+       <string>FLUIGADHOCPROCESS</string>
+      </void>
+      <void property="documentId">
+       <int>4</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormularioSolicituddeCompra</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario Solicitud de Compra</string>
+      </void>
+      <void property="documentId">
+       <int>38</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormularioSolicituddeCompra-Alejandro</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario Solicitud de Compra - Alejandro</string>
+      </void>
+      <void property="documentId">
+       <int>39</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormularioSolicituddecompras-rolando</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario Solicitud de compras-rolando</string>
+      </void>
+      <void property="documentId">
+       <int>40</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormularioSolicitudCompraEdgarV</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario Solicitud Compra Edgar V</string>
+      </void>
+      <void property="documentId">
+       <int>41</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_registro_del_departamento</string>
+      </void>
+      <void property="documentDescription">
+       <string>Registro del Departamento</string>
+      </void>
+      <void property="documentId">
+       <int>51</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_registro_del_departamento_alejandro</string>
+      </void>
+      <void property="documentDescription">
+       <string>Registro del Departamento</string>
+      </void>
+      <void property="documentId">
+       <int>52</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_registro_departamentos_rolando</string>
+      </void>
+      <void property="documentDescription">
+       <string>registro_departamentos_rolando</string>
+      </void>
+      <void property="documentId">
+       <int>53</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_registro_departamento</string>
+      </void>
+      <void property="documentDescription">
+       <string>Registro Departamento</string>
+      </void>
+      <void property="documentId">
+       <int>54</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicituddePagoMarcelo</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud de Pago Marcelo</string>
+      </void>
+      <void property="documentId">
+       <int>156</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicituddepago</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud de pago</string>
+      </void>
+      <void property="documentId">
+       <int>157</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicitud_pago-PO</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud_pago-PO</string>
+      </void>
+      <void property="documentId">
+       <int>158</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodesolicitud_pago_example_alejandro</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de solicitud_pago_example_alejandro</string>
+      </void>
+      <void property="documentId">
+       <int>159</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicitudPago-Hilton</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud Pago - Hilton</string>
+      </void>
+      <void property="documentId">
+       <int>160</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicituddePago_1745433620618</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud de Pago</string>
+      </void>
+      <void property="documentId">
+       <int>161</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicitud_pago_Carlos</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud_pago_Carlos</string>
+      </void>
+      <void property="documentId">
+       <int>163</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_form_solicitud_compras</string>
+      </void>
+      <void property="documentDescription">
+       <string>Solicitud de Compras</string>
+      </void>
+      <void property="documentId">
+       <int>180</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_form_pre_registro_parametros</string>
+      </void>
+      <void property="documentDescription">
+       <string>Pre-Registro Parámetros</string>
+      </void>
+      <void property="documentId">
+       <int>205</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_solicitud_linea_credito</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud de Extensión de Línea</string>
+      </void>
+      <void property="documentId">
+       <int>218</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_presupuesto_proveedor</string>
+      </void>
+      <void property="documentDescription">
+       <string>Presupuesto Proveedor</string>
+      </void>
+      <void property="documentId">
+       <int>394</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>ds_form_pre_inscripcion_parametros</string>
+      </void>
+      <void property="documentDescription">
+       <string>Pre-Inscripción Parámetros</string>
+      </void>
+      <void property="documentId">
+       <int>658</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodesolicitud-marca-terceros_1761324548962</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de solicitud-marca-terceros</string>
+      </void>
+      <void property="documentId">
+       <int>666</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodesolicitud_compra_exterior</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de solicitud_compra_exterior</string>
+      </void>
+      <void property="documentId">
+       <int>711</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodedesarrollo_ext_cre</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de desarrollo_ext_cre</string>
+      </void>
+      <void property="documentId">
+       <int>772</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="com.totvs.technology.ecmrestclient.cardindexpublisher.FormVO">
+      <void property="datasetName">
+       <string>DSFormulariodeSolicituddetransferenciadedeposito</string>
+      </void>
+      <void property="documentDescription">
+       <string>Formulario de Solicitud de transferencia de deposito</string>
+      </void>
+      <void property="documentId">
+       <int>774</int>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

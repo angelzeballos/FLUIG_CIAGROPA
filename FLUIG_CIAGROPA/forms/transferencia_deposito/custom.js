@@ -145,7 +145,6 @@ function obtenerNombreSolicitante() {
 }
 
 // Función asíncrona para obtener el nombre completo del dataset colleague
-
 function obtenerNombreCompletoDeColleague(login) {
     try {
         console.log("Buscando colleagueName en colleague para login:", login);

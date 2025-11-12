@@ -26,7 +26,6 @@
 
 <body>
 	<div class="fluig-style-guide">
-
 		<form name="form" role="form">
 			<section class="form-hidden-fields">
 				<h2 class="sr-only">Metadata</h2>
@@ -38,14 +37,12 @@
 					<!-- -->
 				</div>
 			</section>
-
 			<!-- Titulo del Formulario -->
 			<div class="panel panel-default" id="panel-titulo">
 				<div class="panel-body text-center">
 					<h1>Solicitud de Transferencia de Depósito</h1>
 				</div>
 			</div>
-
 			<!-- Panel datos del solicitante-->
 			<div class="panel panel-ciagropa" id="panel-solicitud">
 				<div class="panel-heading">
@@ -71,7 +68,6 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- Panel Solicitud de Compras-->
 			<div class="panel panel-ciagropa" id="panel-solicitud">
 				<div class="panel-heading">
@@ -87,7 +83,6 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- Panel cotizaciones a productos-->
 			<div class="panel panel-ciagropa" id="panel-solicitud">
 				<div class="panel-heading">
@@ -95,28 +90,11 @@
 				</div>
 				<div class="panel-body">
 					<div class="form-group row">
-						<div class="col-md-3">
-							<label for="cotizacionDolar">Cotización moneda:</label>
-							<input type="text" class="form-control input-standart" id="cotizacionDolar"
-								name="cotizacionDolar" readonly value="7010 Gs">
-						</div>
-						<div class="col-md-3">
-							<label for="actualizarMoneda">Ultima Actualización:</label>
-							<input type="text" class="form-control input-standart" id="actualizarMoneda"
-								name="actualizarMoneda" readonly value="2025-10-30 10:25:10">
-
-							<div style="display: flex; align-items: center;">
-								<small style="margin-right: 10px;">Sincronizar cotización de moneda</small>
-								<button class="btn btn-success btnSincronizarMoneda edt-ajuste"
-									onclick="sincronizarMoneda()">Sincronizar</button>
-							</div>
-						</div>
 						<div class="col-md-2">
 							<label for="">Cotización de Producto</label>
 							<button class="btn btn btn-success btn-agregar-cotizacion edt-ajuste"
 								id="btnAgregarCotizacion">Agregar</button>
 						</div>
-
 					</div>
 					<div class="form-group row">
 						<div class="table-responsive">
@@ -131,8 +109,13 @@
 										</th>
 										<th>Producto</th>
 										<th>Cotizante</th>
-										<th>Fabricante</th>
 										<th>Cantidad</th>
+										<th>Packaging</th>
+										<th>Pago Contado</th>
+										<th>Pago 180 Días</th>
+										<th>ETD</th>
+										<th>Supply Comments</th>
+										<th>Autorizado</th>
 										<th class="btn-ver-detalles"></th>
 										<th class="btn-eliminar-item"></th>
 									</tr>
@@ -141,25 +124,43 @@
 									<tr class="rowTabItens" id="rowTabItens">
 										<td class="btn-agregar-item">
 										</td>
-										<td id="clCotizante">
-											<input type="text" class="form-control" id="itCotizante" name="itCotizante">
-										</td>
-										<td id="clFabricante">
-											<input type="text" class="form-control" id="itFabricante"
-												name="itFabricante">
-										</td>
-										<td id="clProducto">
+										<td id="clProducto" class="col-md-2">
 											<input type="text" class="form-control" id="itProducto" name="itProducto">
 										</td>
-										<td id="clPrecio">
-											<input type="text" class="form-control" id="itPrecio" name="itPrecio">
+										<td id="clCotizante" class="col-md-2">
+											<input type="text" class="form-control" id="itCotizante" name="itCotizante">
 										</td>
-										<td id="clCantidad">
+										<td id="clCantidad" class="col-md-1">
 											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
+										</td>
+										<td id="clPackaging" class="col-md-1">
+											<input type="text" class="form-control" id="itPackaging" name="itPackaging">
+										</td>
+										<td id="clPagoContado" class="col-md-1">
+											<input type="text" class="form-control" id="itPagoContado"
+												name="itPagoContado">
+										</td>
+										<td id="clPago180Dias" class="col-md-1">
+											<input type="text" class="form-control" id="itPago180Dias"
+												name="itPago180Dias">
+										</td>
+										<td id="clETD" class="col-md-2">
+											<input type="text" class="form-control" id="itETD" name="itETD">
+										</td>
+										<td id="clSupplyComments" class="col-md-2">
+											<textarea name="itSupplyComments" id="itSupplyComments" class="form-control"
+												placeholder="Ingrese los comentarios de la cotización"
+												rows="2"></textarea>
+										</td>
+										<td id="clAutorizado">
+											<label class="custom-checkbox">
+												<input name="itAutorizado" id="itAutorizado" type="checkbox">
+												<span class="checkmark"></span>
+											</label>
 										</td>
 										<td class="btn-ver-detalles">
 											<button type="button" class="btn btn-success btn-ver-detalles edt-ajuste"
-												id="btnVerDetalles">Ver Detalles</button>
+												id="btnVerDetalles">•••</button>
 										</td>
 										<td class="btn-eliminar-item">
 											<button class="btn btn-danger btnRemoveItem edt-ajuste"
@@ -171,9 +172,7 @@
 						</div>
 					</div>
 				</div>
-
 		</form>
-
 		<!-- Modal de Confirmación de Cotización -->
 		<div id="modalConfirmacionCotizacion" class="modal-overlay" style="display: none;">
 			<div class="modal-container">
@@ -184,6 +183,7 @@
 				</div>
 				<form id="formAgregarCotizacion" name="formAgregarCotizacion" class="modal-body">
 					<div class="form-group row">
+
 						<div class="col-md-4 modal-details">
 							<label for="searchProducto">Producto:</label>
 							<div class="input-container">
@@ -192,17 +192,35 @@
 								<div class="highlight"></div>
 							</div>
 							<div id="searchResultsProductos" class="results-container">
+							</div>
+						</div>
 
+						<div class="col-md-6 modal-details">
+							<label for="cotizante">Cotizantes:</label>
+							<div class="multi-select-wrapper">
+								<div class="tags-container" id="tagsCotizante">
+									<span class="placeholder-text">Seleccionar cotizantes...</span>
+								</div>
+								<select name="cotizante" id="cotizante" class="input" multiple style="display: none;">
+									<option value="cotizante1">SHANDONG CYNDA CHEMICAL CO LTD</option>
+									<option value="cotizante2">NANJING RED SUN CO.LTD</option>
+									<option value="cotizante3">BIOAGRILAND HK CROP CARE CO. LTD.</option>
+									<option value="cotizante4">E-TONG CHEMICAL (HONG KONG) CO LTD</option>
+									<option value="cotizante5">EASTCHEM CO LTD</option>
+								</select>
+								<div class="dropdown-options" id="dropdownCotizante">
+									<div class="option-item" data-value="cotizante1">SHANDONG CYNDA CHEMICAL CO LTD
+									</div>
+									<div class="option-item" data-value="cotizante2">NANJING RED SUN CO.LTD</div>
+									<div class="option-item" data-value="cotizante3">BIOAGRILAND HK CROP CARE CO. LTD.
+									</div>
+									<div class="option-item" data-value="cotizante4">E-TONG CHEMICAL (HONG KONG) CO LTD
+									</div>
+									<div class="option-item" data-value="cotizante5">EASTCHEM CO LTD</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4 modal-details">
-							<label for="cotizante">Cotizante:</label>
-							<div class="input-container">
-								<input type="text" name="cotizante" id="cotizante" class="input"
-									placeholder="Ingrese el cotizante">
-								<div class="highlight"></div>
-							</div>
-						</div>
+
 						<div class="col-md-2 modal-details">
 							<label for="cantidad">Cantidad:</label>
 							<div class="input-container">
@@ -211,17 +229,9 @@
 								<div class="highlight"></div>
 							</div>
 						</div>
-						<div class="col-md-2 modal-details">
-							<label for="packaging">Packaging:</label>
-							<div class="input-container">
-								<input type="text" name="packaging" id="packaging" class="input"
-									placeholder="Ingrese el packaging">
-								<div class="highlight"></div>
-							</div>
-						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-md-3 modal-details">
+						<div class="col-md-4 modal-details">
 							<label for="condicionPago">Condiciones de Pago:</label>
 							<div class="multi-select-wrapper">
 								<div class="tags-container" id="tagsCondicionPago">
@@ -246,32 +256,34 @@
 						</div>
 						<div class="col-md-3 modal-details">
 							<label for="puertoDestino">Puerto Destino:</label>
-							<div class="input-container">
-								<input type="text" name="puertoDestino" id="puertoDestino" class="input"
-									placeholder="Ingrese el puerto destino">
-								<div class="highlight"></div>
+							<div class="single-select-wrapper">
+								<div class="select-display" id="displayPuertoDestino">
+									<span class="placeholder-text">Seleccionar puerto destino...</span>
+								</div>
+								<select name="puertoDestino" id="puertoDestino" class="input" style="display: none;">
+									<option value="">Seleccionar puerto destino...</option>
+									<option value="puerto1">Villeta</option>
+									<option value="puerto2">Montevideo</option>
+									<option value="puerto3">Brasilia</option>
+									<option value="puerto4">Caracas</option>
+									<option value="puerto5">Asunción</option>
+								</select>
+								<div class="dropdown-options" id="dropdownPuertoDestino">
+									<div class="option-port" data-value="puerto1">Villeta</div>
+									<div class="option-port" data-value="puerto2">Montevideo</div>
+									<div class="option-port" data-value="puerto3">Brasilia</div>
+									<div class="option-port" data-value="puerto4">Caracas</div>
+									<div class="option-port" data-value="puerto5">Asunción</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-2 modal-details">
-							<label for="etd">ETD:</label>
+						<div class="col-md-3 modal-details">
+							<label for="packaging">Packaging:</label>
 							<div class="input-container">
-								<input type="date" name="etd" id="etd" class="input" placeholder="Ingrese la ETD">
+								<input type="text" name="packaging" id="packaging" class="input"
+									placeholder="Ingrese el packaging">
 								<div class="highlight"></div>
 							</div>
-						</div>
-						<div class="col-md-2 modal-details">
-							<label for="validezCotizacion">Validez Cotización:</label>
-							<div class="input-container">
-								<input type="date" name="validezCotizacion" id="validezCotizacion" class="input"
-									placeholder="Ingrese la validez de la cotización">
-								<div class="highlight"></div>
-							</div>
-						</div>
-						<div class="col-md-2 modal-details">
-							<label for="autorizado">Autorizado:</label>
-							<input type="checkbox" class="input-standart" id="autorizado" name="autorizado"
-								placeholder="Ingrese si está autorizado">
-							<small style="display: block;">Señalar si es autorizado</small>
 						</div>
 					</div>
 					<div class="form-group row">

@@ -256,8 +256,8 @@ select[readonly][onclick] {
     color: var(--danger-color);
 }
 
-.radio-ajuste input[type="radio"]:checked~.radio-text,
-.radio-ajuste:has(input[type="radio"]:checked) {
+.radio-derivar input[type="radio"]:checked~.radio-text,
+.radio-derivar:has(input[type="radio"]:checked) {
     border-color: var(--warning-color);
     background-color: rgba(255, 193, 7, 0.1);
     color: var(--warning-color);
@@ -287,7 +287,7 @@ select[readonly][onclick] {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    max-width: 1200px;
+    max-width: 600px;
     width: 90%;
     animation: modalSlideIn 0.3s ease-out;
 }
@@ -322,14 +322,14 @@ select[readonly][onclick] {
     gap: 10px;
 }
 
-.icon-warning {
+.icon-notificacion {
     font-size: 24px;
-    color: #ffc107;
+    color: #d11717;
 }
 
 .modal-body {
     padding: 24px;
-    color: #333;
+    color: #ffffff;
 }
 
 .modal-message {
@@ -782,4 +782,76 @@ mark {
     background: #e8ebff;
     color: #4AA148;
     font-weight: 500;
+}
+
+/* ========================  Contenedores de Líneas  ========================= */
+
+.linea-item {
+    background: linear-gradient(135deg, #fff 0%, #fff 100%);
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
+    cursor: pointer;
+}
+
+.linea-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 15px rgba(111, 111, 111, 0.25);
+    border-color: #4AA148;
+    cursor: pointer;
+}
+
+.linea-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.linea-input {
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+    border: 1px solid #cacaca7e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #212529;
+    text-align: center;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.linea-input:hover,
+.linea-input:focus {
+    cursor: pointer;
+    outline: none;
+    border-color: #cacaca7e;
+}
+
+/* ========================  Button Enviar Notificación  ========================= */
+
+.btn-enviar-notificacion {
+    background: #4c9c4b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 40px;
+    transition: background 0.2s;
+    white-space: nowrap;
+    margin-right: 80px;
+    font-size: 16px;
 }

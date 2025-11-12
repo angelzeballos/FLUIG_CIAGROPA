@@ -1,0 +1,349 @@
+/* ==========================================================================
+   General Pivot UI Styles
+   ========================================================================== */
+   .pvtUi {
+    color: #3a3f45;
+    font-size: 10px;
+}
+
+/* ==========================================================================
+   Hide Grand Totals
+   ========================================================================== */
+.pvtGrandTotal,
+.pvtRowTotalLabel,
+.rowTotal {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Table Base Styles
+   ========================================================================== */
+table.pvtTable {
+    font-size: 10px;
+    text-align: left;
+    border: 1px solid rgba(74, 161, 72, 0.25);
+    border-collapse: collapse;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Table Header (thead) & Row Header (tbody th)
+   ========================================================================== */
+table.pvtTable thead tr th,
+table.pvtTable tbody tr th {
+    background: var(--background_color_panel, #4AA148);
+    color: var(--color_text_panel, #ffffff);
+    /* background-color: #e6eeee; */
+    border: 1px solid;
+    border-color: rgb(52 61 51 / 26%);
+    font-size: 8pt;
+    padding: 8px 10px;
+    font-weight: 600;
+}
+
+table.pvtTable tbody tr th {
+    background: rgba(74, 161, 72, 0.12);
+    color: #2f6b2d;
+}
+
+table.pvtTable tbody tr td,
+table.pvtTable tfoot tr td {
+    padding: 8px 10px;
+    border-color: rgba(74, 161, 72, 0.15);
+}
+
+table.pvtTable tbody tr:nth-child(even) td {
+    background-color: #f6fbf6;
+}
+
+table.pvtTable tbody tr td:hover {
+    background-color: #edf6ed;
+}
+
+table.pvtTable tfoot tr th {
+    background: rgba(74, 161, 72, 0.18);
+    color: #2f6b2d;
+}
+
+.pvtTotal,
+.pvtGrandTotal {
+    color: #2f6b2d;
+}
+
+
+/* ==========================================================================
+   Table Footer Header (tfoot th)
+   ========================================================================== */
+table.pvtTable tfoot tr th {
+    background-color: #c9dfdf;
+    border: 1px solid #cdcdcd;
+    font-size: 8pt;
+    padding: 5px;
+}
+
+/* ==========================================================================
+   Column & Total Labels
+   ========================================================================== */
+table.pvtTable .pvtColLabel {
+    text-align: center;
+}
+table.pvtTable .pvtTotalLabel {
+    text-align: right;
+}
+
+/* ==========================================================================
+   Table Body Cells
+   ========================================================================== */
+table.pvtTable tbody tr td {
+    color: #3d3d3d;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #cdcdcd;
+    vertical-align: top;
+    text-align: right;
+}
+
+/* ==========================================================================
+   Table Footer Cells
+   ========================================================================== */
+table.pvtTable tfoot tr td {
+    color: #3d3d3d;
+    background-color: #e6eeee;
+    border: 1px solid #cdcdcd;
+    font-size: 8pt;
+    padding: 5px;
+    vertical-align: top;
+    text-align: right;
+}
+
+/* ==========================================================================
+   Totals Emphasis
+   ========================================================================== */
+.pvtTotal,
+.pvtGrandTotal {
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Pivot Values & Ordering
+   ========================================================================== */
+.pvtVals {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.pvtRowOrder,
+.pvtColOrder {
+    cursor: pointer;
+    width: 15px;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.pvtAggregator {
+    margin-bottom: 5px;
+}
+
+.pvtVals select,
+.pvtAxisContainer select,
+.pvtFilterBox select {
+    border: 1px solid rgba(74, 161, 72, 0.35);
+    border-radius: 3px;
+}
+
+.pvtVals select:focus,
+.pvtAxisContainer select:focus,
+.pvtFilterBox input[type="text"]:focus {
+    outline: none;
+    border-color: #4AA148;
+    box-shadow: 0 0 0 1px rgba(74, 161, 72, 0.25);
+}
+
+/* ==========================================================================
+   Axis Container (Drag & Drop Areas)
+   ========================================================================== */
+.pvtAxisContainer,
+.pvtVals {
+    border: 1px solid gray;
+    background: #eee;
+    padding: 5px;
+    min-width: 20px;
+    min-height: 20px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+}
+
+.pvtAxisContainer li {
+    background: #ffffff;
+    color: #3a3f45;
+    padding: 8px 6px;
+    border-radius: 3px;
+    border-color: rgba(74, 161, 72, 0.2);
+    list-style-type: none;
+    cursor: move;
+}
+
+.pvtAxisContainer li:hover {
+    border-color: rgba(74, 161, 72, 0.5);
+}
+
+.pvtAxisContainer li.pvtPlaceholder {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 3px 15px;
+    border: 1px dashed #aaa;
+}
+
+.pvtAxisContainer li span.pvtAttr {
+    -webkit-text-size-adjust: 100%;
+    color: #4AA148;
+    background: #f3f3f3;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    padding: 2px 5px;
+    white-space: nowrap;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+/* ==========================================================================
+   Sorting Triangles
+   ========================================================================== */
+.pvtTriangle {
+    cursor: pointer;
+    color: #4AA148;
+}
+
+/* ==========================================================================
+   Lists Layout
+   ========================================================================== */
+.pvtHorizList li {
+    display: inline;
+}
+
+.pvtVertList {
+    vertical-align: top;
+}
+
+/* ==========================================================================
+   Filtered Attribute Indicator
+   ========================================================================== */
+.pvtFilteredAttribute {
+    font-style: italic;
+}
+
+/* ==========================================================================
+   Filter Box
+   ========================================================================== */
+.pvtFilterBox {
+    z-index: 100;
+    width: 300px;
+    border: 1px solid gray;
+    background-color: #fff;
+    border-color: rgba(74, 161, 72, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    position: absolute;
+    text-align: center;
+}
+
+.pvtFilterBox h4 {
+    margin: 15px;
+}
+
+.pvtFilterBox p {
+    margin: 10px auto;
+}
+
+.pvtFilterBox label {
+    font-weight: normal;
+}
+
+.pvtFilterBox input[type="checkbox"] {
+    margin: 0 10px;
+}
+
+.pvtFilterBox input[type="text"] {
+    width: 230px;
+    border-radius: 3px;
+    border: 1px solid rgba(74, 161, 72, 0.35);
+}
+
+.pvtFilterBox .count {
+    color: gray;
+    font-weight: normal;
+    margin-left: 3px;
+}
+
+/* ==========================================================================
+   Checkbox Container (Scrollable)
+   ========================================================================== */
+.pvtCheckContainer {
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow-y: scroll;
+    width: 100%;
+    max-height: 250px;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+}
+
+.pvtCheckContainer p {
+    margin: 5px;
+}
+
+/* ==========================================================================
+   Renderer Area Padding
+   ========================================================================== */
+.pvtRendererArea {
+    padding: 5px;
+}
+
+.pvtRendererArea,
+.pvtVals,
+.pvtAxisContainer {
+    background: var(--background_widget, #f7f7f7);
+    border-radius: 4px;
+    border-color: rgba(74, 161, 72, 0.25);
+}
+
+/* ==========================================================================
+   Callout Styles
+   ========================================================================== */
+.bs-callout-warning {
+    border-left-color: #f0ad4e !important;
+}
+
+.bs-callout {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-warning h4 {
+    color: #f0ad4e !important;
+}
+
+.bs-callout h4 {
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0 !important;
+}
+
+.pm-label {
+	font-size: small !important;
+	padding-left: 2px !important;
+    padding-right: 2px !important;
+    padding-top: 5px !important;
+}

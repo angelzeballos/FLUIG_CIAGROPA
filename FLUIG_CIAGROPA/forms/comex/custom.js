@@ -9,6 +9,8 @@ window.onload = function () {
     inicializarModalVerDetalles();
     inicializarBusquedaProductos();
     inicializarMultiSelect();
+    inicializarMultiSelectCotizante();
+    inicializarCustomSelectPuertoDestino();
 }
 
 // =================== Inicializacion y Contexto ====================
@@ -491,6 +493,7 @@ function inicializarMultiSelect() {
     const dropdown = $('#dropdownCondicionPago');
     const select = $('#condicionPago');
     const placeholder = tagsContainer.find('.placeholder-text');
+    const wrapper = tagsContainer.closest('.multi-select-wrapper');
 
     tagsContainer.on('click', function (e) {
         if (!$(e.target).hasClass('tag-remove')) {
@@ -499,14 +502,16 @@ function inicializarMultiSelect() {
         }
     });
 
+    // Cerrar al hacer clic fuera del wrapper específico
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.multi-select-wrapper').length) {
+        if (!$(e.target).closest(wrapper).length) {
             dropdown.removeClass('open');
             tagsContainer.removeClass('open');
         }
     });
 
-    $('.option-item').on('click', function () {
+    // Usar selector específico para este dropdown
+    dropdown.find('.option-item').on('click', function () {
         const value = $(this).data('value');
         const text = $(this).text();
 
@@ -527,7 +532,7 @@ function inicializarMultiSelect() {
         const tag = $(`
             <span class="tag" data-value="${value}">
                 ${text}
-                <span class="tag-remove" onclick="eliminarTag('${value}')">×</span>
+                <span class="tag-remove" data-value="${value}">×</span>
             </span>
         `);
         placeholder.hide();
@@ -547,16 +552,160 @@ function inicializarMultiSelect() {
         }
     }
 
-    window.eliminarTag = function (value) {
-        event.stopPropagation();
-        $(`.option-item[data-value="${value}"]`).removeClass('selected');
+    // Handler para eliminar tags desde el botón de eliminar
+    tagsContainer.on('click', '.tag-remove', function (e) {
+        e.stopPropagation();
+        const value = $(this).data('value');
+        dropdown.find(`.option-item[data-value="${value}"]`).removeClass('selected');
         select.find(`option[value="${value}"]`).prop('selected', false);
         removeTag(value);
-    };
+    });
 }
 
 function obtenerCondicionesPago() {
     const valores = $('#condicionPago').val();
     console.log('Condiciones seleccionadas:', valores);
     return valores;
+}
+
+// =================== Funciones de selección de cotizantes ====================
+
+function inicializarMultiSelectCotizante() {
+    const tagsContainer = $('#tagsCotizante');
+    const dropdown = $('#dropdownCotizante');
+    const select = $('#cotizante');
+    const placeholder = tagsContainer.find('.placeholder-text');
+    const wrapper = tagsContainer.closest('.multi-select-wrapper');
+
+    tagsContainer.on('click', function (e) {
+        if (!$(e.target).hasClass('tag-remove')) {
+            dropdown.toggleClass('open');
+            tagsContainer.toggleClass('open');
+        }
+    });
+
+    // Cerrar al hacer clic fuera del wrapper específico
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest(wrapper).length) {
+            dropdown.removeClass('open');
+            tagsContainer.removeClass('open');
+        }
+    });
+
+    // Usar selector específico para este dropdown
+    dropdown.find('.option-item').on('click', function () {
+        const value = $(this).data('value');
+        const text = $(this).text();
+
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', false);
+            removeTag(value);
+        } else {
+            $(this).addClass('selected');
+            select.find(`option[value="${value}"]`).prop('selected', true);
+            addTag(value, text);
+        }
+
+        updatePlaceholder();
+    });
+
+    function addTag(value, text) {
+        const tag = $(`
+            <span class="tag" data-value="${value}">
+                ${text}
+                <span class="tag-remove" data-value="${value}">×</span>
+            </span>
+        `);
+        placeholder.hide();
+        tagsContainer.append(tag);
+    }
+
+    function removeTag(value) {
+        tagsContainer.find(`.tag[data-value="${value}"]`).remove();
+        updatePlaceholder();
+    }
+
+    function updatePlaceholder() {
+        if (tagsContainer.find('.tag').length === 0) {
+            placeholder.show();
+        } else {
+            placeholder.hide();
+        }
+    }
+
+    // Handler para eliminar tags desde el botón de eliminar
+    tagsContainer.on('click', '.tag-remove', function (e) {
+        e.stopPropagation();
+        const value = $(this).data('value');
+        dropdown.find(`.option-item[data-value="${value}"]`).removeClass('selected');
+        select.find(`option[value="${value}"]`).prop('selected', false);
+        removeTag(value);
+    });
+}
+
+function obtenerCotizantes() {
+    const valores = $('#cotizante').val();
+    console.log('Cotizantes seleccionados:', valores);
+    return valores;
+}
+
+// =================== Funciones de selección de puerto destino ====================
+
+function inicializarCustomSelectPuertoDestino() {
+    const displayContainer = $('#displayPuertoDestino');
+    const dropdown = $('#dropdownPuertoDestino');
+    const select = $('#puertoDestino');
+    const placeholder = displayContainer.find('.placeholder-text');
+    const wrapper = displayContainer.closest('.single-select-wrapper');
+
+    // Toggle dropdown
+    displayContainer.on('click', function (e) {
+        dropdown.toggleClass('open');
+        displayContainer.toggleClass('open');
+    });
+
+    // Cerrar al hacer clic fuera
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest(wrapper).length) {
+            dropdown.removeClass('open');
+            displayContainer.removeClass('open');
+        }
+    });
+
+    // Seleccionar opción
+    dropdown.find('.option-port').on('click', function () {
+        const value = $(this).data('value');
+        const text = $(this).text();
+
+        // Remover selección previa
+        dropdown.find('.option-port').removeClass('selected');
+
+        // Marcar como seleccionado
+        $(this).addClass('selected');
+
+        // Actualizar select oculto
+        select.val(value).trigger('change');
+
+        // Actualizar display
+        updateDisplay(text);
+
+        // Cerrar dropdown
+        dropdown.removeClass('open');
+        displayContainer.removeClass('open');
+    });
+
+    function updateDisplay(text) {
+        if (text) {
+            displayContainer.html(`<span class="selected-text">${text}</span>`);
+        } else {
+            displayContainer.html('<span class="placeholder-text">Seleccionar puerto destino...</span>');
+        }
+    }
+}
+
+function obtenerPuertoDestino() {
+    const valor = $('#puertoDestino').val();
+    console.log('Puerto destino seleccionado:', valor);
+    return valor;
 }

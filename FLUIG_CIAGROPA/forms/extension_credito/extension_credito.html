@@ -1,15 +1,769 @@
 <html>
+
 <head>
-	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css"/>
+	<!-- Fluig core -->
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide-flat.min.css" />
 	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
 	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+	<!-- Plugins -->
+	<script type="text/javascript" src="jquery.mask.min.js"></script>
+	<script type="text/javascript" src="jquery.masMoney.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="pivot.js"></script>
+
+	<!-- Application -->
+	<link type="text/css" rel="stylesheet" href="custom.css">
+	<link type="text/css" rel="stylesheet" href="pivot.css">
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script type="text/javascript" src="activities.js"></script>
+	<script type="text/javascript" src="enableFields.js"></script>
+	<script type="text/javascript" src="displayFields.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+	<script type="text/javascript" src="mail.js"></script>
+
 </head>
+
 <body>
-<div class="fluig-style-guide">
-<form name="form" role="form">
-</form>
-</div>
+	<div class="fluig-style-guide">
+		<form name="form" role="form">
+			<section class="form-hidden-fields">
+				<h2 class="sr-only">Metadata</h2>
+				<div class="hidden-group">
+					<!-- Controles ocultos -->
+					<input type="hidden" id="codEmpresa" name="codEmpresa">
+					<input type="hidden" id="intActividad" name="intActividad" value="0">
+					<input type="hidden" id="ultActividad" name="ultActividad" value="0">
+					<input type="hidden" id="codUserERP" name="codUserERP">
+					<input type="hidden" id="periodoActual" name="periodoActual" value="20250701 - 20260630">
+					<!-- -->
+				</div>
+			</section>
+
+			<!-- Titulo del Formulario -->
+			<div class="panel panel-default" id="panel-titulo">
+				<div class="panel-body text-center">
+					<h1>Solicitud de Extensión de Línea de Crédito</h1>
+				</div>
+			</div>
+
+			<!-- Panel datos del solicitante-->
+			<div class="panel panel-ciagropa" id="panel-solicitud">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del Solicitante</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="nombreSolicitante">Solicitante</label>
+							<input type="text" class="form-control input-standart" id="nombreSolicitante"
+								name="nombreSolicitante" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="numeroSolicitud">Número de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="numeroSolicitud"
+								name="numeroSolicitud" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaSolicitud">Fecha de Solicitud</label>
+							<input type="text" class="form-control input-standart" id="fechaSolicitud"
+								name="fechaSolicitud" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Detalles del Cliente-->
+			<div class="panel panel-ciagropa" id="panel-cliente">
+				<div class="panel-heading">
+					<h3 class="panel-title">Detalles del Cliente</h3>
+				</div>
+				<div class="panel-body">
+					
+					<div class="form-group row">
+						<div class="col-md-4 modal-details">
+							<label for="solicitudPedido">Pedido:</label>
+							<div class="single-select-wrapper">
+								<div class="select-display" id="displaySolicitudPedido">
+									<span class="placeholder-text">Seleccionar pedido...</span>
+								</div>
+								<select name="solicitudPedido" id="solicitudPedido" class="input"
+									style="display: none;">
+									<option value="">Seleccionar puerto destino...</option>
+									<option value="pedido1">Pedido1</option>
+								</select>
+								<div class="dropdown-options" id="dropdownSolicitudPedido">
+									<div class="option-port" data-value="pedido1">Pedido1 </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-3">
+							<label for="nombreCliente">Cliente:</label>
+							<input type="text" class="form-control input-standart" id="nombreCliente"
+								name="nombreCliente" readonly>
+						</div>
+						<div class="col-md-3">
+							<label for="rucCliente">RUC:</label>
+							<input type="text" class="form-control input-standart" id="rucCliente" name="rucCliente"
+								readonly>
+						</div>
+						<div class="col-md-3">
+							<label for="numeroPedido">Pedido:</label>
+							<input type="text" class="form-control input-standart" id="numeroPedido" name="numeroPedido"
+								readonly>
+						</div>
+						<div class="col-md-3">
+							<label for="nombreComercial">Comercial:</label>
+							<input type="text" class="form-control input-standart" id="nombreComercial"
+								name="nombreComercial" readonly>
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-3">
+							<div class="linea-item">
+								<label for="lineaActual" class="linea-label">Línea</label>
+								<input type="text" class="linea-input" id="lineaActual" name="lineaActual" readonly
+									placeholder="0.0" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="linea-item">
+								<label for="lineaDisponible" class="linea-label">Saldo Disponible</label>
+								<input type="text" class="linea-input" id="lineaDisponible" name="lineaDisponible"
+									readonly placeholder="0.0" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="linea-item">
+								<label for="lineaProgramada" class="linea-label">Valor del Pedido</label>
+								<input type="text" class="linea-input" id="lineaProgramada" name="lineaProgramada"
+									readonly placeholder="0.0" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="linea-item">
+								<label for="lineaSaldo" class="linea-label">Saldo Final</label>
+								<input type="text" class="linea-input" id="lineaSaldo" name="lineaSaldo" readonly
+									placeholder="0.0" />
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="table-responsive">
+							<table class="table table-condensed table-items" id="tablaItems" talbename="tablaItems"
+								nodeletebutton="true" noaddbutton="true"
+								style="vertical-align: inherit; table-layout: auto;">
+								<thead>
+									<tr>
+										<th>Item</th>
+										<th>Producto</th>
+										<th>Descripción</th>
+										<th>Cantidad</th>
+										<th>Cta. Aprobada</th>
+										<th>Cta. Saldo</th>
+										<th>Prc. Unitario</th>
+										<th>Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="rowTabItens" id="rowTabItens">
+										<td id="clItem" class="col-md-1">
+											<input type="text" class="form-control" id="itItem" name="itItem">
+										</td>
+										<td id="clProducto" class="col-md-1">
+											<input type="text" class="form-control" id="itProducto" name="itProducto">
+										</td>
+										<td id="clDescripcion" class="col-md-3">
+											<input type="text" class="form-control" id="itDescripcion"
+												name="itDescripcion">
+										</td>
+										<td id="clCantidad" class="col-md-1">
+											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
+										</td>
+										<td id="clCtaAprobada" class="col-md-1">
+											<input type="text" class="form-control" id="itCtaAprobada"
+												name="itCtaAprobada">
+										</td>
+										<td id="clCtaSaldo" class="col-md-1">
+											<input type="text" class="form-control" id="itCtaSaldo" name="itCtaSaldo">
+										</td>
+										<td id="clPrcUnitario" class="col-md-1">
+											<input type="text" class="form-control" id="itPrcUnitario"
+												name="itPrcUnitario">
+										</td>
+										<td id="clValor" class="col-md-1">
+											<input type="text" class="form-control" id="itValor" name="itValor">
+										</td>
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-6 modal-details">
+							<label for="obsSolicitud">Observaciones de la Solicitud:</label>
+							<textarea name="obsSolicitud" id="obsSolicitud" class="input"
+								placeholder="Ingrese las observaciones de la solicitud"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-3">
+							<div class="linea-item">
+								<label for="lineaSugerida" class="linea-label">Línea Sugerida</label>
+								<input type="text" class="linea-input" id="lineaSugerida" name="lineaSugerida" readonly
+									placeholder="0.0" />
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Panel Aprobación Analista-->
+			<div class="panel panel-ciagropa" id="panel-analista">
+				<div class="panel-heading">
+					<h3 class="panel-title">Decisión del Analista</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableAnalista">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableAnalista"
+								name="responsableAnalista" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionAnalista">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionAnalista"
+								name="fechaAprobacionAnalista" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-2">
+							<label for="lineaAnalista">Línea</label>
+							<input type="text" class="form-control input-standart" id="lineaAnalista"
+								name="lineaAnalista" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaDisponibleAnalista">Saldo Disponible</label>
+							<input type="text" class="form-control input-standart" id="lineaDisponibleAnalista"
+								name="lineaDisponibleAnalista" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaProgramadaAnalista">Valor del Pedido</label>
+							<input type="text" class="form-control input-standart" id="lineaProgramadaAnalista"
+								name="lineaProgramadaAnalista" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaSugeridaAnalista">Línea Sugerida</label>
+							<input type="text" class="form-control input-standart" id="lineaSugeridaAnalista"
+								name="lineaSugeridaAnalista" readonly>
+						</div>
+					</div>
+					<label>Decisión del Analista:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoAnalista" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoAnalista" name="decisionAnalista"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoAnalista" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoAnalista"
+									name="decisionAnalista" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="derivarAnalista" class="radio-label radio-derivar">
+								<input type="radio" class="form-control" id="derivarAnalista" name="decisionAnalista"
+									value="derivar">
+								<span class="radio-text">Derivar</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosAnalistaContainer">
+						<div class="col-md-6 modal-details">
+							<label for="comentariosAnalista">Comentarios:</label>
+							<textarea name="comentariosAnalista" id="comentariosAnalista" class="input"
+								placeholder="Ingresar comentarios" rows="2"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Aprobación Gerente-->
+			<div class="panel panel-ciagropa" id="panel-gerente">
+				<div class="panel-heading">
+					<h3 class="panel-title">Decisión del Gerente</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableGerente">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableGerente"
+								name="responsableGerente" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionGerente">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionGerente"
+								name="fechaAprobacionGerente" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-2">
+							<label for="lineaGerente">Línea</label>
+							<input type="text" class="form-control input-standart" id="lineaGerente" name="lineaGerente"
+								readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaDisponibleGerente">Saldo Disponible</label>
+							<input type="text" class="form-control input-standart" id="lineaDisponibleGerente"
+								name="lineaDisponibleGerente" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaProgramadaGerente">Valor del Pedido</label>
+							<input type="text" class="form-control input-standart" id="lineaProgramadaGerente"
+								name="lineaProgramadaGerente" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaSugeridaGerente">Línea Sugerida</label>
+							<input type="text" class="form-control input-standart" id="lineaSugeridaGerente"
+								name="lineaSugeridaGerente" readonly>
+						</div>
+					</div>
+					<label>Decisión del Gerente:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoGerente" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoGerente" name="decisionGerente"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoGerente" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoGerente" name="decisionGerente"
+									value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="derivarGerente" class="radio-label radio-derivar">
+								<input type="radio" class="form-control" id="derivarGerente" name="decisionGerente"
+									value="derivar">
+								<span class="radio-text">Derivar</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosGerenteContainer">
+						<div class="col-md-6 modal-details">
+							<label for="comentariosGerente">Comentarios:</label>
+							<textarea name="comentariosGerente" id="comentariosGerente" class="input"
+								placeholder="Ingresar comentarios" rows="2"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Aprobación Gerente General-->
+			<div class="panel panel-ciagropa" id="panel-gerente-general">
+				<div class="panel-heading">
+					<h3 class="panel-title">Decisión del Gerente General</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableGerenteGeneral">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableGerenteGeneral"
+								name="responsableGerenteGeneral" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionGerenteGeneral">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionGerenteGeneral"
+								name="fechaAprobacionGerenteGeneral" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-2">
+							<label for="lineaGerenteGeneral">Línea</label>
+							<input type="text" class="form-control input-standart" id="lineaGerenteGeneral"
+								name="lineaGerenteGeneral" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaDisponibleGerenteGeneral">Saldo Disponible</label>
+							<input type="text" class="form-control input-standart" id="lineaDisponibleGerenteGeneral"
+								name="lineaDisponibleGerenteGeneral" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaProgramadaGerenteGeneral">Valor del Pedido</label>
+							<input type="text" class="form-control input-standart" id="lineaProgramadaGerenteGeneral"
+								name="lineaProgramadaGerenteGeneral" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaSugeridaGerenteGeneral">Línea Sugerida</label>
+							<input type="text" class="form-control input-standart" id="lineaSugeridaGerenteGeneral"
+								name="lineaSugeridaGerenteGeneral" readonly>
+						</div>
+					</div>
+					<label>Decisión del Gerente General:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoGerenteGeneral" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoGerenteGeneral"
+									name="decisionGerenteGeneral" value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoGerenteGeneral" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoGerenteGeneral"
+									name="decisionGerenteGeneral" value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="derivarGerenteGeneral" class="radio-label radio-derivar">
+								<input type="radio" class="form-control" id="derivarGerenteGeneral"
+									name="decisionGerenteGeneral" value="derivar">
+								<span class="radio-text">Derivar</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosGerenteGeneralContainer">
+						<div class="col-md-6 modal-details">
+							<label for="comentariosGerenteGeneral">Comentarios:</label>
+							<textarea name="comentariosGerenteGeneral" id="comentariosGerenteGeneral" class="input"
+								placeholder="Ingresar comentarios" rows="2"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel Aprobación CDA-->
+			<div class="panel panel-ciagropa" id="panel-cda">
+				<div class="panel-heading">
+					<h3 class="panel-title">Decisión del CDA</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="responsableCDA">Responsable</label>
+							<input type="text" class="form-control input-standart" id="responsableCDA"
+								name="responsableCDA" readonly>
+						</div>
+						<div class="col-md-4">
+							<label for="fechaAprobacionCDA">Fecha y Hora</label>
+							<input type="text" class="form-control input-standart" id="fechaAprobacionCDA"
+								name="fechaAprobacionCDA" readonly>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-2">
+							<label for="lineaCDA">Línea</label>
+							<input type="text" class="form-control input-standart" id="lineaCDA" name="lineaCDA"
+								readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaDisponibleCDA">Saldo Disponible</label>
+							<input type="text" class="form-control input-standart" id="lineaDisponibleCDA"
+								name="lineaDisponibleCDA" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaProgramadaCDA">Valor del Pedido</label>
+							<input type="text" class="form-control input-standart" id="lineaProgramadaCDA"
+								name="lineaProgramadaCDA" readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="lineaSugeridaCDA">Línea Sugerida</label>
+							<input type="text" class="form-control input-standart" id="lineaSugeridaCDA"
+								name="lineaSugeridaCDA" readonly>
+						</div>
+					</div>
+					<label>Decisión del CDA:</label>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label for="aprobadoCDA" class="radio-label radio-aprobar">
+								<input type="radio" class="form-control" id="aprobadoCDA" name="decisionCDA"
+									value="aprobado">
+								<span class="radio-text">Aprobado</span>
+							</label>
+							<label for="desaprobadoCDA" class="radio-label radio-rechazar">
+								<input type="radio" class="form-control" id="desaprobadoCDA" name="decisionCDA"
+									value="desaprobado">
+								<span class="radio-text">Desaprobado</span>
+							</label>
+							<label for="derivarCDA" class="radio-label radio-derivar">
+								<input type="radio" class="form-control" id="derivarCDA" name="decisionCDA"
+									value="derivar">
+								<span class="radio-text">Derivar</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group row" id="comentariosCDAContainer">
+						<div class="col-md-6 modal-details">
+							<label for="comentariosCDA">Comentarios:</label>
+							<textarea name="comentariosCDA" id="comentariosCDA" class="input"
+								placeholder="Ingresar comentarios" rows="2"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+
+		<!-- Modal de Confirmación de Aprobación de Línea Sugerida -->
+		<div id="modalConfirmacionAprobacion" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						<i class="fluigicon fluigicon-warning-sign icon-warning"></i>
+						Confirmar Carga de Línea
+					</h3>
+				</div>
+				<div class="modal-body">
+					<p class="modal-message">
+						<strong>Al confirmar, se procederá con la carga de la línea establecida.</strong>
+					</p>
+					<div class="modal-details">
+						<p><strong>Línea Sugerida:</strong> <span id="modalLineaSugerida"></span></p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-cancel" id="btnCancelarAprobacion">
+						<i class="fluigicon fluigicon-cancel"></i>
+						Cancelar
+					</button>
+					<button type="button" class="btn btn-success" id="btnConfirmarAprobacion">
+						<i class="fluigicon fluigicon-ok"></i>
+						Confirmar Carga de Línea
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal para envio de notificacion de rechazo -->
+		<div id="modalEnvioNotificacionRechazo" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						<i class="fluigicon fluigicon-envelope-sign icon-notificacion"></i>
+						Enviar Notificación de Rechazo
+					</h3>
+				</div>
+				<div class="modal-body">
+					<button class="btn-enviar-notificacion" id="btnEnviarNotificacionRechazo">
+						✉️ Enviar Notificación
+					</button>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!-- Modal de Confirmación de Cotización -->
+		<div id="modalConfirmacionCotizacion" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						Agregar Producto a Cotizar
+					</h3>
+				</div>
+				<form id="formAgregarCotizacion" name="formAgregarCotizacion" class="modal-body">
+					<div class="form-group row">
+						<div class="col-md-4 modal-details">
+							<label for="searchProducto">Producto:</label>
+							<div class="input-container">
+								<input type="text" name="searchProducto" id="searchProducto" class="input"
+									placeholder="Ingrese el producto">
+								<div class="highlight"></div>
+							</div>
+							<div id="searchResultsProductos" class="results-container">
+							</div>
+						</div>
+						<div class="col-md-6 modal-details">
+							<label for="cotizante">Cotizantes:</label>
+							<div class="multi-select-wrapper">
+								<div class="tags-container" id="tagsCotizante">
+									<span class="placeholder-text">Seleccionar cotizantes...</span>
+								</div>
+								<select name="cotizante" id="cotizante" class="input" multiple style="display: none;">
+									<option value="cotizante1">SHANDONG CYNDA CHEMICAL CO LTD</option>
+									<option value="cotizante2">NANJING RED SUN CO.LTD</option>
+									<option value="cotizante3">BIOAGRILAND HK CROP CARE CO. LTD.</option>
+									<option value="cotizante4">E-TONG CHEMICAL (HONG KONG) CO LTD</option>
+									<option value="cotizante5">EASTCHEM CO LTD</option>
+								</select>
+								<div class="dropdown-options" id="dropdownCotizante">
+									<div class="option-item" data-value="cotizante1">SHANDONG CYNDA CHEMICAL CO LTD
+									</div>
+									<div class="option-item" data-value="cotizante2">NANJING RED SUN CO.LTD</div>
+									<div class="option-item" data-value="cotizante3">BIOAGRILAND HK CROP CARE CO. LTD.
+									</div>
+									<div class="option-item" data-value="cotizante4">E-TONG CHEMICAL (HONG KONG) CO LTD
+									</div>
+									<div class="option-item" data-value="cotizante5">EASTCHEM CO LTD</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2 modal-details">
+							<label for="cantidad">Cantidad:</label>
+							<div class="input-container">
+								<input type="text" name="cantidad" id="cantidad" class="input"
+									placeholder="Ingrese la cantidad">
+								<div class="highlight"></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-4 modal-details">
+							<label for="condicionPago">Condiciones de Pago:</label>
+							<div class="multi-select-wrapper">
+								<div class="tags-container" id="tagsCondicionPago">
+									<span class="placeholder-text">Selecciona opciones...</span>
+								</div>
+								<select name="condicionPago" id="condicionPago" class="input" multiple
+									style="display: none;">
+									<option value="contado">Contado</option>
+									<option value="credito30">Crédito 30 Días</option>
+									<option value="credito60">Crédito 60 Días</option>
+									<option value="credito90">Crédito 90 Días</option>
+									<option value="credito180">Crédito 180 Días</option>
+								</select>
+								<div class="dropdown-options" id="dropdownCondicionPago">
+									<div class="option-item" data-value="contado">Contado</div>
+									<div class="option-item" data-value="credito30">Crédito 30 Días</div>
+									<div class="option-item" data-value="credito60">Crédito 60 Días</div>
+									<div class="option-item" data-value="credito90">Crédito 90 Días</div>
+									<div class="option-item" data-value="credito180">Crédito 180 Días</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="puertoDestino">Puerto Destino:</label>
+							<div class="single-select-wrapper">
+								<div class="select-display" id="displayPuertoDestino">
+									<span class="placeholder-text">Seleccionar puerto destino...</span>
+								</div>
+								<select name="puertoDestino" id="puertoDestino" class="input" style="display: none;">
+									<option value="">Seleccionar puerto destino...</option>
+									<option value="puerto1">Villeta</option>
+									<option value="puerto2">Montevideo</option>
+									<option value="puerto3">Brasilia</option>
+									<option value="puerto4">Caracas</option>
+									<option value="puerto5">Asunción</option>
+								</select>
+								<div class="dropdown-options" id="dropdownPuertoDestino">
+									<div class="option-port" data-value="puerto1">Villeta</div>
+									<div class="option-port" data-value="puerto2">Montevideo</div>
+									<div class="option-port" data-value="puerto3">Brasilia</div>
+									<div class="option-port" data-value="puerto4">Caracas</div>
+									<div class="option-port" data-value="puerto5">Asunción</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="packaging">Packaging:</label>
+							<div class="input-container">
+								<input type="text" name="packaging" id="packaging" class="input"
+									placeholder="Ingrese el packaging">
+								<div class="highlight"></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-6 modal-details">
+							<label for="supplyComments">Supply Comments:</label>
+							<textarea name="supplyComments" id="supplyComments" class="input"
+								placeholder="Ingrese los comentarios de la cotización"></textarea>
+							<div class="highlight"></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-cancel" id="btnCancelarCotizacion">
+							<i class="fluigicon fluigicon-cancel"></i>
+							Cancelar
+						</button>
+						<button type="button" class="btn btn-success" id="btnConfirmarCotizacion">
+							<i class="fluigicon fluigicon-ok"></i>
+							Confirmar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal de Ver Detalles -->
+		<div id="modalVerDetalles" class="modal-overlay" style="display: none;">
+			<div class="modal-container">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						Ver Detalles de la Cotización
+					</h3>
+				</div>
+				<form id="formVerDetalles" name="formVerDetalles" class="modal-body">
+					<div class="form-group row">
+						<div class="col-md-3 modal-details">
+							<label for="packagingDetalle">Packaging:</label>
+							<input type="text" class="input-standart" id="packagingDetail" name="packagingDetail"
+								placeholder="Ingrese el packaging">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="condicionPago">Condición de Pago:</label>
+							<input type="text" class="input-standart" id="condicionPagoDetail"
+								name="condicionPagoDetail" placeholder="Ingrese la condición de pago">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="puertoDestino">Puerto Destino:</label>
+							<input type="text" class="input-standart" id="puertoDestinoDetail"
+								name="puertoDestinoDetail" placeholder="Ingrese el puerto destino">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="incoterm">Incoterm:</label>
+							<input type="text" class="input-standart" id="incotermDetail" name="incotermDetail"
+								placeholder="Ingrese el incoterm">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 modal-details">
+							<label for="plazoEntrega">Plazo Entrega (Días):</label>
+							<input type="number" class="input-standart" id="plazoEntregaDetail"
+								name="plazoEntregaDetail" placeholder="Ingrese el plazo de entrega">
+						</div>
+						<div class="col-md-3 modal-details">
+							<label for="autorizado">Autorizado:</label>
+							<input type="checkbox" class="input-standart" id="autorizadoDetail" name="autorizadoDetail"
+								placeholder="Ingrese si está autorizado">
+							<small style="display: block;">Señalar si es autorizado</small>
+						</div>
+						<div class="col-md-6 modal-details">
+							<label for="observaciones">Observaciones:</label>
+							<textarea style="display: block;" name="observacionesDetail" id="observacionesDetail"
+								class="input-standart" placeholder="Observación sobre la cotización.."
+								rows="5"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" id="btnCerrarVerDetalles">
+							<i class="fluigicon fluigicon-ok"></i>
+							Cerrar
+						</button>
+						<button type="button" class="btn btn-success" id="btnConfirmarCompra">
+							<i class="fluigicon fluigicon-ok"></i>
+							Confirmar Cotización
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
 </body>
+
 </html>
