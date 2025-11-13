@@ -88,83 +88,63 @@ function enableField(containerElement, enabled) {
 function enableFields(ACTIVIDAD) {
     console.log('enableFields llamado con ACTIVIDAD:', ACTIVIDAD);
     
-    if (ACTIVIDAD == CREAR_SOLICITUD || ACTIVIDAD == INICIO || ACTIVIDAD == 0 || ACTIVIDAD == 5) {
+    if (ACTIVIDAD == CREAR_SOLICITUD || ACTIVIDAD == INICIO || ACTIVIDAD == 0 || ACTIVIDAD == 3) {
         enableContainer($("#panel-solicitud"), true);
         enableContainer($("#panel-detalles"), true);
 
         // Ocultar paneles posteriores
-        $("#panel-validacion-comercial").hide();
-        $("#panel-gestion-registros").hide();
-        $("#panel-aprobacion-etiqueta-tecnica").hide();
-        $("#panel-gestion-senave").hide();
-        $("#panel-cierre-notificaciones").hide();
+        $("#panel-analista").hide();
+        $("#panel-gerente-riesgos").hide();
+        $("#panel-gerente-general").hide();
+        $("#panel-cda").hide();
         
-        console.log('Mostrando panel-solicitud y panel-detalles');
+        console.log('Mostrando panel de solicitud y panel de detalles');
     }
 
-    if (ACTIVIDAD == APROBACION_MARKETING || ACTIVIDAD == 6) {
+    if (ACTIVIDAD == APROBACION_ANALISTA || ACTIVIDAD == 4) {
         // Mostrar paneles anteriores en modo solo lectura
         enableContainer($("#panel-solicitud"), false);
         enableContainer($("#panel-detalles"), false);
-        enableContainer($("#panel-validacion-comercial"), true);
+        enableContainer($("#panel-analista"), true);
 
-        $("#panel-gestion-registros").hide();
-        $("#panel-aprobacion-etiqueta-tecnica").hide();
-        $("#panel-gestion-senave").hide();
-        $("#panel-cierre-notificaciones").hide();
+        $("#panel-gerente-riesgos").hide();
+        $("#panel-gerente-general").hide();
+        $("#panel-cda").hide();
         
-        console.log('Mostrando panel-validacion-comercial');
+        console.log('Mostrando panel de Analista de Riesgos');
     }
 
-    if (ACTIVIDAD == APROBACION_REGISTROS || ACTIVIDAD == 13) {
+    if (ACTIVIDAD == APROBACION_GERENTE_RIESGOS || ACTIVIDAD == 13) {
         enableContainer($("#panel-solicitud"), false);
         enableContainer($("#panel-detalles"), false);
-        enableContainer($("#panel-validacion-comercial"), false);
-        enableContainer($("#panel-gestion-registros"), true);
+        enableContainer($("#panel-analista"), false);
+        enableContainer($("#panel-gerente-riesgos"), true);
 
-        $("#panel-aprobacion-etiqueta-tecnica").hide();
-        $("#panel-gestion-senave").hide();
-        $("#panel-cierre-notificaciones").hide();
+        $("#panel-gerente-general").hide();
+        $("#panel-cda").hide();
         
-        console.log('Mostrando panel-gestion-registros');
+        console.log('Mostrando panel de Gerente de Riesgos');
     }
 
-    if (ACTIVIDAD == APROBACION_ETIQUETA_TECNICA || ACTIVIDAD == 20) {
+    if (ACTIVIDAD == APROBACION_GERENTE_GENERAL || ACTIVIDAD == 22) {
         enableContainer($("#panel-solicitud"), false);
         enableContainer($("#panel-detalles"), false);
-        enableContainer($("#panel-validacion-comercial"), false);
-        enableContainer($("#panel-gestion-registros"), false);
-        enableContainer($("#panel-aprobacion-etiqueta-tecnica"), true);
+        enableContainer($("#panel-analista"), false);
+        enableContainer($("#panel-gerente-riesgos"), false);
+        enableContainer($("#panel-gerente-general"), true);
 
-        $("#panel-gestion-senave").hide();
-        $("#panel-cierre-notificaciones").hide();
+        $("#panel-cda").hide();
         
-        console.log('Mostrando panel-aprobacion-etiqueta-tecnica');
+        console.log('Mostrando panel de Gerente General');
     }
 
-    if (ACTIVIDAD == DOCUMENTACION_SENAVE || ACTIVIDAD == 27) {
+    if (ACTIVIDAD == APROBACION_CDA || ACTIVIDAD == 31) {
         enableContainer($("#panel-solicitud"), false);
         enableContainer($("#panel-detalles"), false);
-        enableContainer($("#panel-validacion-comercial"), false);
-        enableContainer($("#panel-gestion-registros"), false);
-        enableContainer($("#panel-aprobacion-etiqueta-tecnica"), false);
-        enableContainer($("#panel-gestion-senave"), true);
-
-        $("#panel-cierre-notificaciones").hide();
+        enableContainer($("#panel-gerente-riesgos"), false);
+        enableContainer($("#panel-gerente-general"), false);
+        enableContainer($("#panel-cda"), true);
         
-        console.log('Mostrando panel-gestion-senave');
-    }
-
-    if (ACTIVIDAD == CIERRE_NOTIFICACIONES || ACTIVIDAD == 29) {
-        enableContainer($("#panel-solicitud"), false);
-        enableContainer($("#panel-detalles"), false);
-        enableContainer($("#panel-validacion-comercial"), false);
-        enableContainer($("#panel-gestion-registros"), false);
-        enableContainer($("#panel-aprobacion-etiqueta-tecnica"), false);
-        enableContainer($("#panel-gestion-senave"), false);
-        enableContainer($("#panel-cierre-notificaciones"), true);
-        
-        console.log('Mostrando panel-cierre-notificaciones');
     }
 }
 
