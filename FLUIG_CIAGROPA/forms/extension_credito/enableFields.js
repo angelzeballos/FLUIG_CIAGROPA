@@ -89,7 +89,7 @@ function enableFields(ACTIVIDAD) {
     console.log('enableFields llamado con ACTIVIDAD:', ACTIVIDAD);
     
     if (ACTIVIDAD == CREAR_SOLICITUD || ACTIVIDAD == INICIO || ACTIVIDAD == 0 || ACTIVIDAD == 3) {
-        enableContainer($("#panel-solicitud"), true);
+        enableContainer($("#panel-solicitud"), false);
         enableContainer($("#panel-detalles"), true);
 
         // Ocultar paneles posteriores

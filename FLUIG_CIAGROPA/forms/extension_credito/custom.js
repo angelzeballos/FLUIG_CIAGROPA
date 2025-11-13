@@ -8,6 +8,7 @@ window.onload = function () {
     inicializarModalAprobacion();
     inicializarModalEnvioNotificacionRechazo();
     inicializarPanelDetallesCliente();
+
 }
 
 // =================== Inicializacion y Contexto ====================
@@ -263,169 +264,268 @@ function removeLINHA(button) {
 // =================== Funciones para Panel de Detalles del Cliente ====================
 
 function inicializarPanelDetallesCliente() {
-    // Listener para el cambio de selección en solicitudPedido
-    $('#solicitudPedido').on('change', function() {
-        var codPedido = $(this).val();
-        
-        // Validar que se haya seleccionado un pedido
-        if (!codPedido || codPedido === '') {
-            console.log('No se ha seleccionado un pedido');
-            limpiarCamposDetallesCliente();
-            return;
-        }
-        
-        console.log('Consultando dataset para pedido:', codPedido);
-        
-        // Mostrar loading
-        if (loading) {
-            loading.show();
-        }
-        
-        // Consultar dataset ds_valida_linea_credito filtrando por COD_PEDIDO
-        try {
-            // Verificar que DatasetFactory esté disponible
-            if (typeof DatasetFactory === 'undefined') {
-                console.error('DatasetFactory no está disponible');
-                if (loading) {
-                    loading.hide();
-                }
-                limpiarCamposDetallesCliente();
-                if (window.FLUIGC && window.FLUIGC.message) {
-                    FLUIGC.message.error('Error: DatasetFactory no está disponible. Por favor, contacte al administrador.');
-                }
+    // Obtener ACTIVIDAD para usar en las funciones internas
+    var ACTIVIDAD = obtenerActividad();
+    if (isNaN(ACTIVIDAD)) {
+        ACTIVIDAD = 0;
+    }
+
+    function seleccionarPedido() {
+        $('#solicitudPedido').on('change', function () {
+            const selectedPedido = $(this).val();
+            const option = $(this).find('option:selected');
+
+            if (!selectedPedido || selectedPedido === "") {
+                console.log("No se ha seleccionado ningún pedido");
                 return;
             }
-            
-            var constraints = new Array();
-            var constraintPedido = DatasetFactory.createConstraint("COD_PEDIDO", codPedido, codPedido, ConstraintType.MUST);
-            constraints.push(constraintPedido);
-            
-            DatasetFactory.getDataset("test2_datasetSimple", null, constraints, null, {
-                success: function(dataset) {
-                    try {
-                        if (loading) {
-                            loading.hide();
-                        }
-                        
-                        if (dataset && dataset.values && dataset.values.length > 0) {
-                            // Obtener el primer registro (debería ser único por pedido)
-                            var registro = dataset.values[0];
-                            
-                            console.log('Datos obtenidos del dataset:', registro);
-                            
-                            // Mapear campos del dataset a los campos del formulario
-                            // nombreCliente <- DESC_CLIENTE
-                            var nombreCliente = registro["DESC_CLIENTE"] || '';
-                            $('#nombreCliente').val(nombreCliente);
-                            
-                            // rucCliente <- RUC
-                            var rucCliente = registro["RUC"] || '';
-                            $('#rucCliente').val(rucCliente);
-                            
-                            // numeroPedido <- COD_PEDIDO
-                            var numeroPedido = registro["COD_PEDIDO"] || '';
-                            $('#numeroPedido').val(numeroPedido);
-                            
-                            // nombreComercial <- DESC_VENDEDOR
-                            var nombreComercial = registro["DESC_VENDEDOR"] || '';
-                            $('#nombreComercial').val(nombreComercial);
-                            
-                            // lineaActual <- LINEA_USD
-                            var lineaActual = registro["LINEA_USD"] || '0.0';
-                            $('#lineaActual').val(formatearNumero(lineaActual));
-                            
-                            // lineaDisponible <- DISPONIBLE_USD
-                            var lineaDisponible = registro["DISPONIBLE_USD"] || '0.0';
-                            $('#lineaDisponible').val(formatearNumero(lineaDisponible));
-                            
-                            // lineaProgramada <- TOTAL_PEDIDO
-                            var lineaProgramada = registro["TOTAL_PEDIDO"] || '0.0';
-                            $('#lineaProgramada').val(formatearNumero(lineaProgramada));
-                            
-                            // lineaSaldo <- SALDO_USD
-                            var lineaSaldo = registro["SALDO_USD"] || '0.0';
-                            $('#lineaSaldo').val(formatearNumero(lineaSaldo));
-                            
-                            console.log('Campos del formulario actualizados correctamente');
-                        } else {
-                            console.warn('No se encontraron datos en el dataset para el pedido:', codPedido);
-                            limpiarCamposDetallesCliente();
-                            if (window.FLUIGC && window.FLUIGC.message) {
-                                FLUIGC.message.warning('No se encontraron datos para el pedido seleccionado');
-                            }
-                        }
-                    } catch (e) {
-                        console.error('Error procesando datos del dataset:', e);
-                        if (loading) {
-                            loading.hide();
-                        }
-                        limpiarCamposDetallesCliente();
-                        if (window.FLUIGC && window.FLUIGC.message) {
-                            FLUIGC.message.error('Error al procesar los datos del pedido');
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.error('Error al consultar dataset ds_valida_linea_credito:', error);
-                    if (loading) {
-                        loading.hide();
-                    }
-                    limpiarCamposDetallesCliente();
-                    if (window.FLUIGC && window.FLUIGC.message) {
-                        FLUIGC.message.error('Error al consultar los datos del pedido');
-                    }
-                }
-            });
-        } catch (e) {
-            console.error('Error al crear constraints para consulta de dataset:', e);
-            if (loading) {
-                loading.hide();
+
+            const cliente = option.data('cliente');
+            const ruc = option.data('ruc');
+            const pedido = option.data('pedido');
+            const comercial = option.data('comercial');
+
+            limpiarCamposFormulario();
+
+            $('#nombreCliente').val(cliente);
+            $('#rucCliente').val(ruc);
+            $('#numeroPedido').val(pedido);
+            $('#nombreComercial').val(comercial);
+
+            enableFields(ACTIVIDAD);
+
+            consultarLineaCredito(ruc);
+
+            cargarProductosPedido(selectedPedido);
+
+        });
+    }
+
+    function cargarSelectPedidos() {
+
+        const constraintsValidacion = [
+            DatasetFactory.createConstraint(
+                "ESTADO_VALIDACION",
+                "RECHAZADO",
+                "RECHAZADO",
+                ConstraintType.MUST,
+            ),
+        ];
+
+        const datasetVal = DatasetFactory.getDataset(
+            "test2_datasetSimple",
+            null,
+            constraintsValidacion,
+            null,
+        );
+
+        if (!datasetVal || !datasetVal.values) {
+            console.warn("No se encontraron pedidos rechazados para validación");
+            return;
+        }
+
+        const pedidosMap = new Map();
+
+        datasetVal.values.forEach(function (itemval, index) {
+            const estadoValidacion = itemval["ESTADO_VALIDACION"];
+            if (estadoValidacion !== "RECHAZADO") {
+                return;
             }
-            limpiarCamposDetallesCliente();
-            if (window.FLUIGC && window.FLUIGC.message) {
-                FLUIGC.message.error('Error al consultar el pedido');
+
+            const pedidoRechazado = itemval["COD_PEDIDO"];
+            const cliente = itemval["DESC_CLIENTE"];
+            const ruc = itemval["RUC"];
+            const comercial = itemval["DESC_VENDEDOR"];
+
+            if (!pedidosMap.has(pedidoRechazado)) {
+                pedidosMap.set(pedidoRechazado, {
+                    pedido: pedidoRechazado,
+                    cliente: cliente,
+                    ruc: ruc,
+                    comercial: comercial,
+                });
+            } else {
+                console.warn("Pedido rechazado ya existe en el mapa:", pedidoRechazado);
+            }
+        });
+
+        const select = $('#solicitudPedido');
+        if (!select.length) {
+            console.warn("No se encontró el elemento #solicitudPedido");
+            return;
+        }
+
+        select.find('option:not(:first)').remove();
+
+        pedidosMap.forEach(function (info) {
+            const label = `${info.pedido} - ${info.cliente}`;
+            const option = $(`<option value="${info.pedido}">${label}</option>`);
+            option.attr("data-cliente", info.cliente);
+            option.attr("data-ruc", info.ruc);
+            option.attr("data-pedido", info.pedido);
+            option.attr("data-comercial", info.comercial);
+            select.append(option);
+        });
+    }
+
+    function consultarLineaCredito(ruc) {
+
+        if (!ruc || ruc === "") {
+            return;
+        }
+
+        const datasetCompleto = DatasetFactory.getDataset("test2_datasetSimple", null, null, null);
+
+        if (!datasetCompleto || !datasetCompleto.values) {
+            return;
+        }
+
+        // Normalizar el RUC recibido para comparación
+        const rucNormalizado = ruc ? ruc.trim().replace(/[^0-9]/g, '') : '';
+
+        let rowEncontrado = datasetCompleto.values.find(item => {
+            const rucDataset = item["RUC"] ? item["RUC"].trim().replace(/[^0-9]/g, '') : '';
+            const estadoValidacion = item["ESTADO_VALIDACION"];
+            return rucDataset === rucNormalizado && estadoValidacion === "RECHAZADO";
+        });
+
+        if (rowEncontrado) {
+            console.log("Linea de crédito encontrada con método fijo para RUC:", ruc);
+        } else {
+            // Método alternativo: buscar sin normalizar el RUC recibido
+            rowEncontrado = datasetCompleto.values.find(item => {
+                const rucDataset = item["RUC"] ? item["RUC"].trim().replace(/[^0-9]/g, '') : '';
+                const estadoValidacion = item["ESTADO_VALIDACION"];
+                return rucDataset === rucNormalizado && estadoValidacion === "RECHAZADO";
+            });
+
+            if (rowEncontrado) {
+                console.log("Linea de crédito encontrada con método dinámico para RUC:", ruc);
+            } else {
+                console.warn("No se encontró la línea de crédito para el RUC:", ruc);
             }
         }
-    });
-}
 
-/**
- * Limpia los campos de detalles del cliente
- */
-function limpiarCamposDetallesCliente() {
-    $('#nombreCliente').val('');
-    $('#rucCliente').val('');
-    $('#numeroPedido').val('');
-    $('#nombreComercial').val('');
-    $('#lineaActual').val('');
-    $('#lineaDisponible').val('');
-    $('#lineaProgramada').val('');
-    $('#lineaSaldo').val('');
-}
+        if (rowEncontrado) {
 
-/**
- * Formatea un número para mostrarlo en los campos de línea
- * @param {string|number} valor - Valor a formatear
- * @returns {string} - Valor formateado
- */
-function formatearNumero(valor) {
-    if (!valor || valor === '' || valor === null || valor === undefined) {
-        return '0.0';
+            $("#lineaActual").val(rowEncontrado["LINEA_USD"] || "");
+            $("#lineaDisponible").val(rowEncontrado["DISPONIBLE_USD"] || "");
+            $("#lineaProgramada").val(rowEncontrado["TOTAL_PEDIDO"] || "");
+            $("#lineaSaldo").val(rowEncontrado["SALDO_USD"] || "");
+
+            const lineaUSD = parseFloat(rowEncontrado["LINEA_USD"]) || 0;
+            const saldoUSD = parseFloat(rowEncontrado["SALDO_USD"]) || 0;
+            const lineaSugerida = Math.abs(saldoUSD) + Math.abs(lineaUSD);
+            $("#lineaSugerida").val(lineaSugerida.toFixed(2));
+        } else {
+            // limpiar campos si no hay datos
+            $("#lineaActual").val("0");
+            $("#lineaDisponible").val("0");
+            $("#lineaProgramada").val("0");
+            $("#lineaSaldo").val("0");
+            $("#lineaSugerida").val("0");
+        }
     }
-    
-    // Convertir a número y formatear con 2 decimales
-    var numero = parseFloat(valor);
-    if (isNaN(numero)) {
-        return '0.0';
-    }
-    
-    // Formatear con separador de miles y 2 decimales
-    return numero.toLocaleString('es-PY', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-}
 
+    function cargarProductosPedido(pedidoCod) {
+        if (!pedidoCod || pedidoCod === "") {
+            return;
+        }
+
+        const constraints = [
+            DatasetFactory.createConstraint(
+                "COD_PEDIDO",
+                pedidoCod,
+                pedidoCod,
+                ConstraintType.MUST,
+            ),
+        ];
+
+        const dataset = DatasetFactory.getDataset(
+            "test-linea",
+            null,
+            constraints,
+            null,
+        );
+
+        if (!dataset || !dataset.values || dataset.values.length === 0) {
+            console.warn("No se encontraron productos para el pedido:", pedidoCod);
+            return;
+        }
+
+        const tabla = $("#tablaItems");
+        if (!tabla.length) {
+            return;
+        }
+
+        tabla.empty();
+
+        let productosAgregados = 0;
+        let totalProgramadaUSD = 0;
+
+        dataset.values.forEach(function (item, index) {
+
+            const cantidadProgramada = parseFloat(item["CANTIDAD_PROGRAMADA"]) || 0;
+            const precioUnitario = parseFloat(item["PRECIO_UNITARIO"]) || 0;
+
+            if (cantidadProgramada > 0) {
+                const subtotalproducto = cantidadProgramada * precioUnitario;
+                totalProgramadaUSD += subtotalproducto;
+
+                const row = `
+                <tr class="rowTabItens" id="rowTabItens">
+                                            <td id="clItem" class="col-md-1">
+                                                <input type="text" class="form-control" id="itItem" name="itItem" value="${item['ITEM'] || ''}">
+                                            </td>
+                                            <td id="clProducto" class="col-md-1">
+                                                <input type="text" class="form-control" id="itProducto" name="itProducto" value="${item['COD_PRODUCTO'] || ''}">
+                                            </td>
+                                            <td id="clDescripcion" class="col-md-3">
+                                                <input type="text" class="form-control" id="itDescripcion"
+                                                    name="itDescripcion" value="${item['DESC_PRODUCTO'] || ''}">
+                                            </td>
+                                            <td id="clCantidad" class="col-md-1">
+                                                <input type="text" class="form-control" id="itCantidad" name="itCantidad" value="${item['CANTIDAD_PRODUCTO'] || ''}">
+                                            </td>
+                                            <td id="clCtaAprobada" class="col-md-1">
+                                                <input type="text" class="form-control" id="itCtaAprobada"
+                                                    name="itCtaAprobada" value="${cantidadProgramada}">
+                                            </td>
+                                            <td id="clCtaSaldo" class="col-md-1">
+                                                <input type="text" class="form-control" id="itCtaSaldo" name="itCtaSaldo" value="${item['CANTIDAD_SALDO'] || ''}">
+                                            </td>
+                                            <td id="clPrcUnitario" class="col-md-1">
+                                                <input type="text" class="form-control" id="itPrcUnitario"
+                                                    name="itPrcUnitario" value="${formatearNumero(precioUnitario)}">
+                                            </td>
+                                            <td id="clValor" class="col-md-1">
+                                                <input type="text" class="form-control" id="itValor" name="itValor" value="0">
+                                            </td>
+                                        </tr>
+                `;
+                tabla.append(row);
+                productosAgregados++;
+            }
+        });
+    }
+
+    function limpiarCamposFormulario() {
+
+        $("#nombreCliente").val("");
+        $("#rucCliente").val("");
+        $("#numeroPedido").val("");
+        $("#nombreComercial").val("");
+        $("#lineaActual").val("0");
+        $("#lineaDisponible").val("0");
+        $("#lineaProgramada").val("0");
+        $("#lineaSaldo").val("0");
+        $("#lineaSugerida").val("0");
+        $("#tablaItems").empty();
+    }
+
+    cargarSelectPedidos();
+    seleccionarPedido();
+}
 // =================== Modal de Aprobación de Linea ====================
 
 var radioAprobacionActual = null;
@@ -591,7 +691,7 @@ function confirmarEnvioNotificacionRechazo() {
     if (radioDesaprobacionActual) {
         // Marcar el radio button como seleccionado
         $(radioDesaprobacionActual).prop('checked', true);
-        
+
         // Disparar el evento change para que otros listeners lo detecten
         $(radioDesaprobacionActual).trigger('change');
 

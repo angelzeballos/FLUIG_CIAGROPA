@@ -6,6 +6,10 @@ var loading = window.FLUIGC.loading(window);
 window.onload = function () {
     init();
     inicializarModalAprobacion();
+    cargarSelectPedidos();
+    seleccionarPedido();
+    cargarProductosPedido();
+
 }
 
 // =================== Inicializacion y Contexto ====================
@@ -308,7 +312,7 @@ function cerrarModal() {
 // =================== Funciones de tabla ====================
 
 function addLINHA() {
-    
+
     // 1. Llama a la función de Fluig para agregar una nueva fila
     //    "tablaItems" es el 'tablename' que definiste en tu <table>
     var newRowId = wdkAddChild("tablaItems");
@@ -330,7 +334,7 @@ function addLINHA() {
     $("#itLote___" + newRowId).val(lote);
     $("#itCantidad___" + newRowId).val(cantidad);
     $("#itFechaValidez___" + newRowId).val(fechaValidez);
-    
+
     // 4. (Opcional) Limpiamos los campos del producto del cabecero
     //    Usamos reloadZoom() para limpiar el 'display' del zoom de producto
     //    Si no tienes esa función, usa solo los .val("")
@@ -345,7 +349,6 @@ function addLINHA() {
     $("#fechaValidez").val("");
 
 }
-
 
 function removeLINHA(button) {
     // 'button' es el <button> que se presionó.

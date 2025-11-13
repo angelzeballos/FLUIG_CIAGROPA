@@ -81,26 +81,14 @@
 					<h3 class="panel-title">Detalles del Cliente</h3>
 				</div>
 				<div class="panel-body">
-					
 					<div class="form-group row">
 						<div class="col-md-4 modal-details">
 							<label for="solicitudPedido">Pedido:</label>
-							<div class="single-select-wrapper">
-								<div class="select-display" id="displaySolicitudPedido">
-									<span class="placeholder-text">Seleccionar pedido...</span>
-								</div>
-								<select name="solicitudPedido" id="solicitudPedido" class="input"
-									style="display: none;">
-									<option value="">Seleccionar puerto destino...</option>
-									<option value="pedido1">Pedido1</option>
-								</select>
-								<div class="dropdown-options" id="dropdownSolicitudPedido">
-									<div class="option-port" data-value="pedido1">Pedido1 </div>
-								</div>
-							</div>
+							<select name="solicitudPedido" id="solicitudPedido" class="input">
+								<option value="">Seleccionar pedido...</option>
+							</select>
 						</div>
 					</div>
-
 					<div class="form-group row">
 						<div class="col-md-3">
 							<label for="nombreCliente">Cliente:</label>
@@ -174,35 +162,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="rowTabItens" id="rowTabItens">
-										<td id="clItem" class="col-md-1">
-											<input type="text" class="form-control" id="itItem" name="itItem">
-										</td>
-										<td id="clProducto" class="col-md-1">
-											<input type="text" class="form-control" id="itProducto" name="itProducto">
-										</td>
-										<td id="clDescripcion" class="col-md-3">
-											<input type="text" class="form-control" id="itDescripcion"
-												name="itDescripcion">
-										</td>
-										<td id="clCantidad" class="col-md-1">
-											<input type="text" class="form-control" id="itCantidad" name="itCantidad">
-										</td>
-										<td id="clCtaAprobada" class="col-md-1">
-											<input type="text" class="form-control" id="itCtaAprobada"
-												name="itCtaAprobada">
-										</td>
-										<td id="clCtaSaldo" class="col-md-1">
-											<input type="text" class="form-control" id="itCtaSaldo" name="itCtaSaldo">
-										</td>
-										<td id="clPrcUnitario" class="col-md-1">
-											<input type="text" class="form-control" id="itPrcUnitario"
-												name="itPrcUnitario">
-										</td>
-										<td id="clValor" class="col-md-1">
-											<input type="text" class="form-control" id="itValor" name="itValor">
-										</td>
-									</tr>
+
 								</tbody>
 
 							</table>
@@ -497,6 +457,7 @@
 									value="desaprobado">
 								<span class="radio-text">Desaprobado</span>
 							</label>
+
 						</div>
 					</div>
 					<div class="form-group row" id="comentariosCDAContainer">
